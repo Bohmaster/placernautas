@@ -1,6 +1,8 @@
 import React from 'react';
 import withSSR from '../components/withSSR';
 import axios from 'axios';
+import Helmet from 'react-helmet';
+
 
 class ArticuloDetalle extends React.Component {
   // This works similarly to Next.js's `getInitialProps`
@@ -26,6 +28,15 @@ class ArticuloDetalle extends React.Component {
     const { isLoading, articulo, error } = this.props;
     return (
       <div className="div-block-27">
+        <Helmet
+            defaultTitle="Admin"
+            >
+                <title>{articulo.titulo}</title>
+                <meta name="description" content={articulo.cuerpo}></meta>
+                <meta content={articulo.titulo} property="og:title"/>
+                <meta content={articulo.subtitulo} property="og:description"/>
+
+        </Helmet>
     <div className="w-row">
       <div className="column-5 w-col w-col-9 w-col-tiny-tiny-stack">
         <div className="conttitsecc">

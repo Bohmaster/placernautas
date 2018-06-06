@@ -2,6 +2,8 @@ import React from 'react';
 import withSSR from '../components/withSSR';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import Iframe from 'react-iframe';
+import Helmet from 'react-helmet';
 
 const API = 'http://placernautas.com:3005/api/';
 
@@ -21,9 +23,22 @@ const cargarDestacado = () => {
       where: {
         esDestacado: true,
       },
-      order: 'fecha DESC'
+      order: 'fecha DESC',
+      limit: 1
     }
   }
+  return axios.get(API + 'articulos', {params})
+}
+
+const llenarHome = (where, limit) => {
+  const params = {
+    filter: {
+      where,
+      order: 'fecha DESC',
+      limit: limit
+    }    
+  }
+  console.log(params);
   return axios.get(API + 'articulos', {params})
 }
 
@@ -31,12 +46,21 @@ class Home extends React.Component {
   // This works similarly to Next.js's `getInitialProps`
   static getInitialData({ match, req, res }) {
     return new Promise((resolve, reject) => {
-      axios.all([cargarDestacado(), getArticles()])
-        .then(axios.spread((destacado, articles) => {
+      axios.all([
+        cargarDestacado(),
+        llenarHome({esNovedad: true}, 2),
+        llenarHome({esNotaAutor: true}, 2),
+        llenarHome({esEvento: true}, 2),
+        llenarHome({esVideoDestacado: true}, 5)
+      ])
+        .then(axios.spread((destacado, novedades, notas, eventos, videos) => {
           // console.log(destacado);
           resolve({
-            articles: articles.data,
             destacado: destacado.data[0],
+            novedades: novedades.data,
+            notas: notas.data,
+            eventos: eventos.data,
+            videos: videos.data,
             currentRoute: match.pathName
           })
         }))
@@ -48,10 +72,15 @@ class Home extends React.Component {
   }
 
   render() {
-    const { isLoading, articles, destacado, error } = this.props;
+    const { isLoading, destacado, novedades, notas, eventos, videos, error } = this.props;
     return (
       <div>
-        <div data-poster-url="videos/placernautasLento-poster-00001.jpg" data-video-urls="videos/placernautasLento-transcode.webm,videos/placernautasLento-transcode.mp4" data-autoplay="true" data-loop="true" data-wf-ignore="true" className="background-video w-background-video w-background-video-atom"><video autoPlay="true" loop="true" style={{backgroundImage:"url('videos/placernautasLent-poster-00001.jpg')"}} muted="" data-wf-ignore="true"><source src="videos/placernautasLento-transcode.webm" data-wf-ignore="true"></source><source src="videos/placernautasLento-transcode.mp4" data-wf-ignore="true"></source></video>
+        <Helmet
+            defaultTitle="Admin"
+            >
+                <title>Bebidas, gastronomía y otros placeres | Placernautas</title>
+        </Helmet>
+        <div data-poster-url="videos/placernautasLento-poster-00001.jpg" data-video-urls="videos/placernautasLento-transcode.webm,videos/placernautasLento-transcode.mp4" data-autoplay="true" data-loop="true" data-wf-ignore="true" className="background-video w-background-video w-background-video-atom"><video autoPlay="true" loop="true" styless={{backgroundImage:"url('videos/placernautasLent-poster-00001.jpg')"}} muted="" data-wf-ignore="true"><source src="videos/placernautasLento-transcode.webm" data-wf-ignore="true"></source><source src="videos/placernautasLento-transcode.mp4" data-wf-ignore="true"></source></video>
         <div className="div-block-3">
           <div className="busqueda celu">
             <div className="div-block-11">Buscar...</div><img src="images/cheffBuscar.png" width="56" className="image-9"></img></div>
@@ -61,7 +90,7 @@ class Home extends React.Component {
               <div className="libea arriba"></div>
               <p className="paragraph">Si mal no recuerdo, son cinco los motivos para beber: la llegada de un amigo, la sed del momento</p>
             </div>
-            <h1 className="heading-4">La comunidad de los navegantes del placer</h1>
+            <h1 className="heading-4">La comunidad de los navegantes del placer {videos[0].videoUrl} {videos[1].videoUrl} {videos[2].videoUrl} {videos[3].videoUrl} {videos[4].videoUrl}</h1>
           </div>
         </div>
       </div>
@@ -97,7 +126,7 @@ class Home extends React.Component {
                     </div>
                     <div data-w-id="88a275c2-df0e-7697-0fc4-6c5d4497cf5c" className="sobrenotahome"></div>
                     <div className="subheadernotahome w-clearfix">
-                      <div className="autornotahome">Por {destacado.autor.nombre} {destacado.autor.apellido}</div><img src="images/descarga.jpg" className="fotoautornotahome"></img></div>
+                      <div className="autornotahome">Por {destacado.autor.nombre} {destacado.autor.apellido}</div><img src={'http://placernautas.com:3005/api/containers/images/download/' + destacado.autor.portada} className="fotoautornotahome"></img></div>
                     <div className="wrapperfotonotahome"><img src={'http://placernautas.com:3005/api/containers/images/download/' + destacado.portada} className="imgnotahome destacado"></img>
                       <div className="pienotahome">
                         <div className="titulonotahome">{destacado.titulo}</div>
@@ -121,40 +150,44 @@ class Home extends React.Component {
                   <div className="div-block-23"></div>
                 </div>
                 <div className="_2columnas w-row">
+                <Link to={'/articulo/' + novedades[0].id}>
                   <div className="column-8 w-col w-col-6">
                     <div className="notahome chica left">
                       <div className="headernotahome w-clearfix">
-                        <div className="categorianotahome">gastronomìa | productos</div>
-                        <div className="fechanotahome">23 de Abril de 2018</div>
+                        <div className="categorianotahome">{novedades[0].categoria.nombre}</div>
+                        <div className="fechanotahome">{novedades[0].fecha}</div>
                       </div>
                       <div className="sobrenotahome"></div>
                       <div className="subheadernotahome w-clearfix">
-                        <div className="autornotahome">Por Alfredo Lasagna</div><img src="images/descarga.jpg" className="fotoautornotahome"></img></div>
+                        <div className="autornotahome">Por {novedades[0].autor.nombre}</div><img src="images/descarga.jpg" className="fotoautornotahome"></img></div>
                       <div className="wrapperfotonotahome">
                         <div className="pienotahome">
-                          <div className="titulonotahome small">La pasta italiana</div>
-                          <div className="subtitulonotahome small">verdades y mitos de un ìcono de la gastronomìa mundial.</div>
+                          <div className="titulonotahome small">{novedades[0].titulo}</div>
+                          <div className="subtitulonotahome small">{novedades[0].subtitulo}</div>
                           <p className="cuerponotahome">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere...</p>
-                        </div><img src="images/pasta-fresca2.jpg" className="imgnotahome chica"></img></div>
+                        </div><img src={'http://placernautas.com:3005/api/containers/images/download/' + novedades[0].portada} className="imgnotahome chica"></img></div>
                     </div>
                   </div>
-                  <div className="column-9 w-col w-col-6">
-                    <div className="notahome chica right movil">
-                      <div className="headernotahome w-clearfix">
-                        <div className="categorianotahome phone">gastronomìa | productos</div>
-                        <div className="fechanotahome">23 de Abril de 2018</div>
+                  </Link>
+                  <Link to={'/articulo/' + novedades[1].id}>
+                    <div className="column-9 w-col w-col-6">
+                      <div className="notahome chica right movil">
+                        <div className="headernotahome w-clearfix">
+                          <div className="categorianotahome phone">{novedades[1].categoria.nombre}</div>
+                          <div className="fechanotahome">{novedades[1].fecha}</div>
+                        </div>
+                        <div className="sobrenotahome"></div>
+                        <div className="subheadernotahome w-clearfix">
+                          <div className="autornotahome">Por {novedades[1].autor.nombre}</div><img src="images/descarga.jpg" className="fotoautornotahome"></img></div>
+                        <div className="wrapperfotonotahome">
+                          <div className="pienotahome">
+                          <div className="titulonotahome small">{novedades[1].titulo}</div>
+                            <div className="subtitulonotahome small">{novedades[1].subtitulo}</div>
+                            <p className="cuerponotahome">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere...</p>
+                          </div><img src={'http://placernautas.com:3005/api/containers/images/download/' + novedades[1].portada} className="imgnotahome chica"></img></div>
                       </div>
-                      <div className="sobrenotahome"></div>
-                      <div className="subheadernotahome w-clearfix">
-                        <div className="autornotahome">Por Alfredo Lasagna</div><img src="images/descarga.jpg" className="fotoautornotahome"></img></div>
-                      <div className="wrapperfotonotahome">
-                        <div className="pienotahome">
-                          <div className="titulonotahome small">La pasta italiana</div>
-                          <div className="subtitulonotahome small">verdades y mitos de un ìcono de la gastronomìa mundial.</div>
-                          <p className="cuerponotahome">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere...</p>
-                        </div><img src="images/pasta-fresca2.jpg" className="imgnotahome chica"></img></div>
                     </div>
-                  </div>
+                  </Link>
                 </div>
                 <div className="publis cuerpo">
                   <div className="logopubli"><img src="images/bodegas.png"></img></div>
@@ -170,40 +203,44 @@ class Home extends React.Component {
                   <div className="div-block-23"></div>
                 </div>
                 <div className="_2columnas w-row">
+                <Link to={'/articulo/' + notas[0].id}>
                   <div className="column-8 w-col w-col-6">
                     <div className="notahome chica left">
                       <div className="headernotahome w-clearfix">
-                        <div className="categorianotahome">gastronomìa | productos</div>
-                        <div className="fechanotahome">23 de Abril de 2018</div>
+                        <div className="categorianotahome">{notas[0].categoria.nombre}</div>
+                        <div className="fechanotahome">{notas[0].fecha}</div>
                       </div>
                       <div className="sobrenotahome"></div>
                       <div className="subheadernotahome w-clearfix">
-                        <div className="autornotahome">Por Alfredo Lasagna</div><img src="images/descarga.jpg" className="fotoautornotahome"></img></div>
+                        <div className="autornotahome">Por {notas[0].autor.nombre}</div><img src="images/descarga.jpg" className="fotoautornotahome"></img></div>
                       <div className="wrapperfotonotahome">
                         <div className="pienotahome">
-                          <div className="titulonotahome small">La pasta italiana</div>
-                          <div className="subtitulonotahome small">verdades y mitos de un ìcono de la gastronomìa mundial.</div>
+                          <div className="titulonotahome small">{notas[0].titulo}</div>
+                          <div className="subtitulonotahome small">{notas[0].subtitulo}</div>
                           <p className="cuerponotahome">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere...</p>
-                        </div><img src="images/pasta-fresca2.jpg" className="imgnotahome chica"></img></div>
+                        </div><img src={'http://placernautas.com:3005/api/containers/images/download/' + notas[0].portada} className="imgnotahome chica"></img></div>
                     </div>
                   </div>
-                  <div className="column-9 w-col w-col-6">
-                    <div className="notahome chica right">
-                      <div className="headernotahome w-clearfix">
-                        <div className="categorianotahome">gastronomìa | productos</div>
-                        <div className="fechanotahome">23 de Abril de 2018</div>
+                  </Link>
+                  <Link to={'/articulo/' + notas[1].id}>
+                    <div className="column-9 w-col w-col-6">
+                      <div className="notahome chica right movil">
+                        <div className="headernotahome w-clearfix">
+                          <div className="categorianotahome phone">{notas[1].categoria.nombre}</div>
+                          <div className="fechanotahome">{notas[1].fecha}</div>
+                        </div>
+                        <div className="sobrenotahome"></div>
+                        <div className="subheadernotahome w-clearfix">
+                          <div className="autornotahome">Por {notas[1].autor.nombre}</div><img src="images/descarga.jpg" className="fotoautornotahome"></img></div>
+                        <div className="wrapperfotonotahome">
+                          <div className="pienotahome">
+                          <div className="titulonotahome small">{notas[1].titulo}</div>
+                            <div className="subtitulonotahome small">{notas[1].subtitulo}</div>
+                            <p className="cuerponotahome">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere...</p>
+                          </div><img src={'http://placernautas.com:3005/api/containers/images/download/' + notas[1].portada} className="imgnotahome chica"></img></div>
                       </div>
-                      <div className="sobrenotahome"></div>
-                      <div className="subheadernotahome w-clearfix">
-                        <div className="autornotahome">Por Alfredo Lasagna</div><img src="images/descarga.jpg" className="fotoautornotahome"></img></div>
-                      <div className="wrapperfotonotahome">
-                        <div className="pienotahome">
-                          <div className="titulonotahome small">La pasta italiana</div>
-                          <div className="subtitulonotahome small">verdades y mitos de un ìcono de la gastronomìa mundial.</div>
-                          <p className="cuerponotahome">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere...</p>
-                        </div><img src="images/pasta-fresca2.jpg" className="imgnotahome chica"></img></div>
                     </div>
-                  </div>
+                  </Link>
                 </div>
                 <div className="publis cuerpo">
                   <div className="logopubli"><img src="images/bodegas.png"></img></div>
@@ -219,40 +256,44 @@ class Home extends React.Component {
                   <div className="div-block-23"></div>
                 </div>
                 <div className="_2columnas w-row">
+                <Link to={'/articulo/' + eventos[0].id}>
                   <div className="column-8 w-col w-col-6">
                     <div className="notahome chica left">
                       <div className="headernotahome w-clearfix">
-                        <div className="categorianotahome">gastronomìa | productos</div>
-                        <div className="fechanotahome">23 de Abril de 2018</div>
+                        <div className="categorianotahome">{eventos[0].categoria.nombre}</div>
+                        <div className="fechanotahome">{eventos[0].fecha}</div>
                       </div>
                       <div className="sobrenotahome"></div>
                       <div className="subheadernotahome w-clearfix">
-                        <div className="autornotahome">Por Alfredo Lasagna</div><img src="images/descarga.jpg" className="fotoautornotahome"></img></div>
+                        <div className="autornotahome">Por {eventos[0].autor.nombre}</div><img src="images/descarga.jpg" className="fotoautornotahome"></img></div>
                       <div className="wrapperfotonotahome">
                         <div className="pienotahome">
-                          <div className="titulonotahome small">La pasta italiana</div>
-                          <div className="subtitulonotahome small">verdades y mitos de un ìcono de la gastronomìa mundial.</div>
+                          <div className="titulonotahome small">{eventos[0].titulo}</div>
+                          <div className="subtitulonotahome small">{eventos[0].subtitulo}</div>
                           <p className="cuerponotahome">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere...</p>
-                        </div><img src="images/pasta-fresca2.jpg" className="imgnotahome chica"></img></div>
+                        </div><img src={'http://placernautas.com:3005/api/containers/images/download/' + eventos[0].portada} className="imgnotahome chica"></img></div>
                     </div>
                   </div>
-                  <div className="column-9 w-col w-col-6">
-                    <div className="notahome chica right">
-                      <div className="headernotahome w-clearfix">
-                        <div className="categorianotahome">gastronomìa | productos</div>
-                        <div className="fechanotahome">23 de Abril de 2018</div>
+                  </Link>
+                  <Link to={'/articulo/' + eventos[1].id}>
+                    <div className="column-9 w-col w-col-6">
+                      <div className="notahome chica right movil">
+                        <div className="headernotahome w-clearfix">
+                          <div className="categorianotahome phone">{eventos[1].categoria.nombre}</div>
+                          <div className="fechanotahome">{eventos[1].fecha}</div>
+                        </div>
+                        <div className="sobrenotahome"></div>
+                        <div className="subheadernotahome w-clearfix">
+                          <div className="autornotahome">Por {eventos[1].autor.nombre}</div><img src="images/descarga.jpg" className="fotoautornotahome"></img></div>
+                        <div className="wrapperfotonotahome">
+                          <div className="pienotahome">
+                          <div className="titulonotahome small">{eventos[1].titulo}</div>
+                            <div className="subtitulonotahome small">{eventos[1].subtitulo}</div>
+                            <p className="cuerponotahome">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere...</p>
+                          </div><img src={'http://placernautas.com:3005/api/containers/images/download/' + eventos[1].portada} className="imgnotahome chica"></img></div>
                       </div>
-                      <div className="sobrenotahome"></div>
-                      <div className="subheadernotahome w-clearfix">
-                        <div className="autornotahome">Por Alfredo Lasagna</div><img src="images/descarga.jpg" className="fotoautornotahome"></img></div>
-                      <div className="wrapperfotonotahome">
-                        <div className="pienotahome">
-                          <div className="titulonotahome small">La pasta italiana</div>
-                          <div className="subtitulonotahome small">verdades y mitos de un ìcono de la gastronomìa mundial.</div>
-                          <p className="cuerponotahome">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere...</p>
-                        </div><img src="images/pasta-fresca2.jpg" className="imgnotahome chica"></img></div>
                     </div>
-                  </div>
+                  </Link>
                 </div>
               </div>
               <div className="notasdeautor">
@@ -265,55 +306,65 @@ class Home extends React.Component {
                 </div>
               </div>
               <div className="videodestacado">
-                <div className="conttitsecc">
-                  <div className="titulosecciones">Multimedia</div>
-                  <div className="div-block-23"></div>
-                </div>
-                <div className="row-7 w-row">
-                  <div className="column-16 w-col w-col-6 w-col-medium-6 w-col-small-6">
-                    <div className="divmultiinicio">
-                      <div className="sobrevideo"></div>
-                      <div style={{paddingTop:"56.17021276595745%"}} id="w-node-206dcb90-eec5-dabb-09c1-a9a8cf7e015c" className="video-2 grande w-video w-embed"><iframe className="embedly-embed" src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FB6EA9pPRrv4%3Ffeature%3Doembed&url=http%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DB6EA9pPRrv4&image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FB6EA9pPRrv4%2Fhqdefault.jpg&key=96f1f04c5f4143bcb0f2e68c87d65feb&type=text%2Fhtml&schema=youtube" scrolling="no" frameBorder="0" allowFullScreen=""></iframe></div>
-                    </div>
-                  </div>
-                  <div className="column-15 w-col w-col-6 w-col-medium-6 w-col-small-6">
-                    <div className="divmultiinicio w-clearfix">
-                      <div className="sobrevideo der"></div>
-                      <div style={{paddingTop:"56.17021276595745%"}} id="w-node-1394ca36-23f0-b086-2c5f-92fcbe098abe" className="video-2 der grande w-video w-embed"><iframe className="embedly-embed" src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FB6EA9pPRrv4%3Ffeature%3Doembed&url=http%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DB6EA9pPRrv4&image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FB6EA9pPRrv4%2Fhqdefault.jpg&key=96f1f04c5f4143bcb0f2e68c87d65feb&type=text%2Fhtml&schema=youtube" scrolling="no" frameBorder="0" allowFullScreen=""></iframe></div>
-                    </div>
-                  </div>
-                </div>
-                <div className="row-9 w-row">
-                  <div className="w-col w-col-4 w-col-small-4">
-                    <div className="divmultiinicio">
-                      <div className="sobrevideo"></div>
-                      <div style={{paddingTop:"56.17021276595745%"}} id="w-node-1a515715-767b-43a8-0c02-93165506e96c" className="video-2 w-video w-embed"><iframe className="embedly-embed" src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FB6EA9pPRrv4%3Ffeature%3Doembed&url=http%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DB6EA9pPRrv4&image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FB6EA9pPRrv4%2Fhqdefault.jpg&key=96f1f04c5f4143bcb0f2e68c87d65feb&type=text%2Fhtml&schema=youtube" scrolling="no" frameBorder="0" allowFullScreen=""></iframe></div>
-                    </div>
-                  </div>
-                  <div className="w-col w-col-4 w-col-small-4">
-                    <div className="divmultiinicio centro">
-                      <div style={{paddingTop:"56.17021276595745%"}} id="w-node-2c5adb49-a8b0-ba54-c46f-c1cb14165851" className="video-2 med w-video w-embed"><iframe className="embedly-embed" src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FvJTXEd5sSls%3Ffeature%3Doembed&url=http%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DvJTXEd5sSls&image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FvJTXEd5sSls%2Fhqdefault.jpg&key=96f1f04c5f4143bcb0f2e68c87d65feb&type=text%2Fhtml&schema=youtube" scrolling="no" frameBorder="0" allowFullScreen=""></iframe></div>
-                    </div>
-                    <div className="divmultiinicio">
-                      <div className="sobrevideo"></div>
-                    </div>
-                  </div>
-                  <div className="w-col w-col-4 w-col-small-4">
-                    <div className="divmultiinicio w-clearfix">
-                      <div className="sobrevideo der"></div>
-                      <div style={{paddingTop:"56.17021276595745%"}} id="w-node-ebb6287d-4f8f-16f4-c511-9749a0f6301f" className="video-2 der w-video w-embed"><iframe className="embedly-embed" src="https://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fwww.youtube.com%2Fembed%2FB6EA9pPRrv4%3Ffeature%3Doembed&url=http%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DB6EA9pPRrv4&image=https%3A%2F%2Fi.ytimg.com%2Fvi%2FB6EA9pPRrv4%2Fhqdefault.jpg&key=96f1f04c5f4143bcb0f2e68c87d65feb&type=text%2Fhtml&schema=youtube" scrolling="no" frameBorder="0" allowFullScreen=""></iframe></div>
-                    </div>
-                  </div>
-                </div>
-                <div className="publis cuerpo">
-                  <div className="logopubli"><img src="images/bodegas.png"></img></div>
-                  <div className="logopubli"><img src="images/chandon2.png"></img></div>
-                  <div className="logopubli"><img src="images/luigi.png"></img></div>
-                  <div className="logopubli"><img src="images/sal.png"></img></div>
-                  <div className="logopubli"><img src="images/vip.png"></img></div>
-                </div>
-                <div className="text-block-6">Formá parte de nuestra comunidad. Publicá en Placernautas.</div>
+          <div className="conttitsecc">
+            <div className="titulosecciones">Multimedia</div>
+            <div className="div-block-23"></div>
+          </div>
+          <div className="row-7 w-row">
+            <div className="column-16 w-col w-col-6 w-col-medium-6 w-col-small-6">
+              <div className="divmultiinicio">
+                <div className="sobrevideo"></div>
+                <div styles="padding-top:56.17021276595745%" id="w-node-206dcb90-eec5-dabb-09c1-a9a8cf7e015c" className="video-2 grande w-video w-embed">
+                  <Iframe url={videos[0].videoUrl} className="embedly-embed" height="350" position="relative"></Iframe>
+                </div> 
               </div>
+            </div>
+            <div className="column-15 w-col w-col-6 w-col-medium-6 w-col-small-6">
+              <div className="divmultiinicio w-clearfix">
+                <div className="sobrevideo der"></div>
+                <div styles="padding-top:56.17021276595745%" id="w-node-1394ca36-23f0-b086-2c5f-92fcbe098abe" className="video-2 der grande w-video w-embed">
+                <Iframe url={videos[1].videoUrl} className="embedly-embed" height="350" position="relative"></Iframe>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="row-9 w-row">
+            <div className="w-col w-col-4 w-col-small-4">
+              <div className="divmultiinicio">
+                <div className="sobrevideo"></div>
+                <div styles="padding-top:56.17021276595745%" id="w-node-1a515715-767b-43a8-0c02-93165506e96c" className="video-2 w-video w-embed">
+                <Iframe url={videos[2].videoUrl} className="embedly-embed" height="350" position="relative"></Iframe>
+                </div>
+              </div>
+            </div>
+            <div className="w-col w-col-4 w-col-small-4">
+              <div className="divmultiinicio centro">
+                <div styles="padding-top:56.17021276595745%" id="w-node-2c5adb49-a8b0-ba54-c46f-c1cb14165851" className="video-2 med w-video w-embed">
+                <Iframe url={videos[3].videoUrl} className="embedly-embed" height="350" position="relative"></Iframe>
+                </div>
+              </div>
+              <div className="divmultiinicio">
+                <div className="sobrevideo"></div>
+              </div>
+            </div>
+            <div className="w-col w-col-4 w-col-small-4">
+              <div className="divmultiinicio w-clearfix">
+                <div className="sobrevideo der"></div>
+                <div styles="padding-top:56.17021276595745%" id="w-node-ebb6287d-4f8f-16f4-c511-9749a0f6301f" className="video-2 der w-video w-embed">
+                <Iframe url={videos[4].videoUrl} className="embedly-embed" height="350" position="relative"></Iframe>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="publis cuerpo">
+            <div className="logopubli"><img src="images/bodegas.png"></img></div>
+            <div className="logopubli"><img src="images/chandon2.png"></img></div>
+            <div className="logopubli"><img src="images/luigi.png"></img></div>
+            <div className="logopubli"><img src="images/sal.png"></img></div>
+            <div className="logopubli"><img src="images/vip.png"></img></div>
+          </div>
+          <div className="text-block-6">Formá parte de nuestra comunidad. Publicá en Placernautas.</div>
+        </div>
               <div className="div-block-33">
                 <p className="paragraph-3">Si tenés algún material interesante y original, envialo a <a href="mailto:info@placernautas.com" className="link-2">info@placernautas.com</a>. Si cumple con los requisitos lo publicaremos citando a su autor.</p><img src="images/mandarMail.png"></img></div>
             </div>
@@ -395,11 +446,12 @@ class Home extends React.Component {
                     <div className="div-block-23"></div>
                   </div>
                   <div className="divmasleido">
-                    <div className="masleido"><img src="images/copaWine.png" srcSet="images/copaWine-p-500.png 500w, images/copaWine.png 626w" sizes="(max-width: 479px) 100vw, (max-width: 767px) 240px, (max-width: 991px) 23vw, 19vw" className="imgmasleido">{/*<a href="#" className="txtmasleido">Saurus Rosé-Lanzamiento del nuevo espumante.</a>*/}</img>/div>
-                                                                                                                                      <div className="masleido"><img src="images/birra.png" srcSet="images/birra-p-500.png 500w, images/birra-p-800.png 800w, images/birra.png 1000w" sizes="(max-width: 479px) 100vw, (max-width: 767px) 240px, (max-width: 991px) 23vw, 19vw" className="imgmasleido">{/*<a href="#" className="txtmasleido">Saurus Rosé-Lanzamiento del nuevo espumante.</a>*/}</img></div>
-                      <div className="masleido"><img src="images/gastroFondo.png" srcSet="images/gastroFondo-p-500.png 500w, images/gastroFondo-p-800.png 800w, images/gastroFondo-p-1080.png 1080w, images/gastroFondo.png 1310w" sizes="(max-width: 479px) 100vw, (max-width: 767px) 240px, (max-width: 991px) 23vw, 19vw" className="imgmasleido">{/*<a href="#" className="txtmasleido">Saurus Rosé-Lanzamiento del nuevo espumante.</a>*/}</img></div>
-                      <div className="masleido"><img src="images/cheff.png" srcSet="images/cheff-p-500.png 500w, images/cheff.png 570w" sizes="(max-width: 479px) 100vw, (max-width: 767px) 240px, (max-width: 991px) 23vw, 19vw" className="imgmasleido">{/*<a href="#" className="txtmasleido">Saurus Rosé-Lanzamiento del nuevo espumante.</a>*/}</img></div>
-                      <div className="masleido"><img src="images/champu.jpg" srcSet="images/champu-p-500.jpeg 500w, images/champu.jpg 600w" sizes="(max-width: 479px) 100vw, (max-width: 767px) 240px, (max-width: 991px) 23vw, 19vw" className="imgmasleido">{/*<a href="#" className="txtmasleido">Saurus Rosé-Lanzamiento del nuevo espumante.</a>*/}</img></div>
+                    <div className="masleido">
+                    {/* <img src="images/copaWine.png" srcSet="images/copaWine-p-500.png 500w, images/copaWine.png 626w" sizes="(max-width: 479px) 100vw, (max-width: 767px) 240px, (max-width: 991px) 23vw, 19vw" className="imgmasleido"><a href="#" className="txtmasleido">Saurus Rosé-Lanzamiento del nuevo espumante.</a></img>
+                                                                                                                                      <div className="masleido"><img src="images/birra.png" srcSet="images/birra-p-500.png 500w, images/birra-p-800.png 800w, images/birra.png 1000w" sizes="(max-width: 479px) 100vw, (max-width: 767px) 240px, (max-width: 991px) 23vw, 19vw" className="imgmasleido"><a href="#" className="txtmasleido">Saurus Rosé-Lanzamiento del nuevo espumante.</a></img></div>
+                      <div className="masleido"><img src="images/gastroFondo.png" srcSet="images/gastroFondo-p-500.png 500w, images/gastroFondo-p-800.png 800w, images/gastroFondo-p-1080.png 1080w, images/gastroFondo.png 1310w" sizes="(max-width: 479px) 100vw, (max-width: 767px) 240px, (max-width: 991px) 23vw, 19vw" className="imgmasleido"><a href="#" className="txtmasleido">Saurus Rosé-Lanzamiento del nuevo espumante.</a></img></div>
+                      <div className="masleido"><img src="images/cheff.png" srcSet="images/cheff-p-500.png 500w, images/cheff.png 570w" sizes="(max-width: 479px) 100vw, (max-width: 767px) 240px, (max-width: 991px) 23vw, 19vw" className="imgmasleido"><a href="#" className="txtmasleido">Saurus Rosé-Lanzamiento del nuevo espumante.</a></img></div>
+                      <div className="masleido"><img src="images/champu.jpg" srcSet="images/champu-p-500.jpeg 500w, images/champu.jpg 600w" sizes="(max-width: 479px) 100vw, (max-width: 767px) 240px, (max-width: 991px) 23vw, 19vw" className="imgmasleido"><a href="#" className="txtmasleido">Saurus Rosé-Lanzamiento del nuevo espumante.</a></img></div> */}
                     </div>
                   </div>
                   <div className="colaboran">

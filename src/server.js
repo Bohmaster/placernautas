@@ -5,6 +5,7 @@ import React from 'react';
 import express from 'express';
 import { renderToString } from 'react-dom/server';
 import routes from './routes';
+import Helmet from 'react-helmet';
 
 import axios from 'axios';
 
@@ -54,7 +55,7 @@ server
     Promise.all(promises)
       .then(data => {
         const context = {};
-
+        console.log('data', data);
         const categories = data.pop();
         data.categories = categories.data;
         // Pass our routes and data array to our App component
@@ -63,6 +64,7 @@ server
             <App routes={routes} initialData={data} />
           </StaticRouter>
         );
+        const helmet = Helmet.renderStatic();
 
         if (context.url) {
           res.redirect(context.url);
@@ -72,13 +74,11 @@ server
                 <html lang="">
                 <head>
                     <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-                    <meta content="Bienvenidos placernautas! Nuestro fin es crear una comunidad de amigos con el fin de compartir conocimientos y experiencias sobre los placeres de la vida." name="description">
-                    <meta content="Bebidas, gastronomía y otros placeres | Placernautas" property="og:title">
-                    <meta content="Bienvenidos placernautas! Nuestro fin es crear una comunidad de amigos con el fin de compartir conocimientos y experiencias sobre los placeres de la vida." property="og:description">
-                    <meta content="https://drive.google.com/open?id=1FYn7OGC1GXCBAckgFSo6VGaUs47b8Xfh" property="og:image">
                     <meta content="summary" name="twitter:card">
                     <meta content="width=device-width, initial-scale=1" name="viewport">
                     <meta content="Webflow" name="generator">
+                    ${helmet.title.toString()}
+                    ${helmet.meta.toString()}
                     <link href="/css/normalize.css" rel="stylesheet" type="text/css">
                     <link href="/css/webflow.css" rel="stylesheet" type="text/css">
                     <link href="/css/placernautas.webflow.css" rel="stylesheet" type="text/css">
@@ -130,5 +130,11 @@ server
         res.status(500).json({ error: error.message, stack: error.stack });
       });
   });
+
+server.get('/admin', (req, res) =>{
+	res.redirect('http://placernautas.com:3005/admin');
+});
+
+server.listen(3010);
 
 export default server;
