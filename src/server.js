@@ -26,6 +26,7 @@ server
     // First we iterate through our top level routes
     // looking for matches against the current url.
     const matches = routes.map((route, index) => {
+      console.log('ROUTE', route, index);
       const match = matchPath(req.url, route.path, route);
       // We then look for static getInitialData function on each top level component
       if (match) {
@@ -55,7 +56,6 @@ server
     Promise.all(promises)
       .then(data => {
         const context = {};
-        console.log('data', data);
         const categories = data.pop();
         data.categories = categories.data;
         // Pass our routes and data array to our App component

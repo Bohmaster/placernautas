@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Iframe from 'react-iframe';
 import Helmet from 'react-helmet';
+import Sidebar from '../components/Sidebar';
 
 const API = 'http://placernautas.com:3005/api/';
 
@@ -17,6 +18,16 @@ const getArticles = () => {
   return axios.get(API + 'articulos')
 }
 
+const loMasLeido = () => {
+  const params = {
+    filter: {
+      order: 'visitas DESC',
+      limit: 5
+    }
+  }
+  return axios.get(API + 'articulos', {params})
+}
+
 const cargarDestacado = () => {
   const params = {
     filter: {
@@ -25,6 +36,19 @@ const cargarDestacado = () => {
       },
       order: 'fecha DESC',
       limit: 1
+    }
+  }
+  return axios.get(API + 'articulos', {params})
+}
+
+const cargarNotaAutor = () => {
+  const params = {
+    filter: {
+      where: {
+        esNotaAutor: true,
+      },
+      order: 'fecha DESC',
+      limit: 5
     }
   }
   return axios.get(API + 'articulos', {params})
@@ -42,6 +66,18 @@ const llenarHome = (where, limit) => {
   return axios.get(API + 'articulos', {params})
 }
 
+const llenarSidebar = () => {
+  const params = {
+    filter: {
+      where: { sidebar: true },
+      order: ['posicionSidebar ASC', 'fecha DESC'],
+      limit: 6
+    }    
+  }
+  console.log(params);
+  return axios.get(API + 'articulos', {params})
+}
+
 class Home extends React.Component {
   // This works similarly to Next.js's `getInitialProps`
   static getInitialData({ match, req, res }) {
@@ -51,9 +87,12 @@ class Home extends React.Component {
         llenarHome({esNovedad: true}, 2),
         llenarHome({esNotaAutor: true}, 2),
         llenarHome({esEvento: true}, 2),
-        llenarHome({esVideoDestacado: true}, 5)
+        llenarHome({esVideoDestacado: true}, 5),
+        llenarSidebar(),
+        loMasLeido(),
+        cargarNotaAutor()
       ])
-        .then(axios.spread((destacado, novedades, notas, eventos, videos) => {
+        .then(axios.spread((destacado, novedades, notas, eventos, videos, sidebar, leidas, autores) => {
           // console.log(destacado);
           resolve({
             destacado: destacado.data[0],
@@ -61,6 +100,9 @@ class Home extends React.Component {
             notas: notas.data,
             eventos: eventos.data,
             videos: videos.data,
+            sidebar: sidebar.data,
+            leidas: leidas.data,
+            autores: autores.data,
             currentRoute: match.pathName
           })
         }))
@@ -68,11 +110,10 @@ class Home extends React.Component {
   }
 
   click = () => {
-    console.log('ASD');
   }
 
   render() {
-    const { isLoading, destacado, novedades, notas, eventos, videos, error } = this.props;
+    const { isLoading, destacado, novedades, notas, eventos, videos, sidebar, leidas, autores, error } = this.props;
     return (
       <div>
         <Helmet
@@ -90,7 +131,7 @@ class Home extends React.Component {
               <div className="libea arriba"></div>
               <p className="paragraph">Si mal no recuerdo, son cinco los motivos para beber: la llegada de un amigo, la sed del momento</p>
             </div>
-            <h1 className="heading-4">La comunidad de los navegantes del placer {videos[0].videoUrl} {videos[1].videoUrl} {videos[2].videoUrl} {videos[3].videoUrl} {videos[4].videoUrl}</h1>
+            <h1 className="heading-4">La comunidad de los navegantes del placer</h1>
           </div>
         </div>
       </div>
@@ -369,115 +410,7 @@ class Home extends React.Component {
                 <p className="paragraph-3">Si tenés algún material interesante y original, envialo a <a href="mailto:info@placernautas.com" className="link-2">info@placernautas.com</a>. Si cumple con los requisitos lo publicaremos citando a su autor.</p><img src="images/mandarMail.png"></img></div>
             </div>
             <div className="column-4 w-clearfix w-col w-col-3 w-col-small-small-stack">
-              <div className="section-2">
-                <div className="notasidebar">
-                  <div className="conttitsecc">
-                    <div className="titulosecciones sb">Arte</div>
-                    <div className="div-block-23"></div>
-                  </div>
-                  <div className="div-block-30">
-                    <div className="divfotosidebar"><img src="images/flor_1.jpg" srcSet="images/flor_1-p-500.jpeg 500w, images/flor_1.jpg 600w" sizes="(max-width: 479px) 93vw, (max-width: 767px) 49vw, (max-width: 991px) 23vw, 20vw" className="imgnotasidebar"></img></div>
-                    <div className="pienotasidebar">
-                      <div className="titulosidebar">Artistas rosarinos</div>
-                      <div className="subtitulosidebar">Obra de Flor Balestra</div>
-                    </div>
-                  </div>
-                </div>
-                <div className="publisb"><img src="images/altaGama.jpg" className="image-4"></img></div>
-                <div className="notasidebar">
-                  <div className="conttitsecc">
-                    <div className="titulosecciones sb">Vino del mes</div>
-                    <div className="div-block-23"></div>
-                  </div>
-                  <div className="div-block-30">
-                    <div className="divfotosidebar"><img src="images/77-espumante-quinde-rose-x1-011-0970e056dadbf7b87715122964508331-640-0.jpg" srcSet="images/77-espumante-quinde-rose-x1-011-0970e056dadbf7b87715122964508331-640-0-p-500.jpeg 500w, images/77-espumante-quinde-rose-x1-011-0970e056dadbf7b87715122964508331-640-0.jpg 640w" sizes="(max-width: 479px) 93vw, (max-width: 767px) 49vw, (max-width: 991px) 23vw, 20vw" className="imgnotasidebar"></img></div>
-                    <div className="pienotasidebar">
-                      <div className="titulosidebar">Quinde rosado</div>
-                      <div className="subtitulosidebar">Bodega Peñaflor</div>
-                    </div>
-                  </div>
-                </div>
-                <div className="publisb"><img src="images/Gato-Dumas-logo12.jpg" className="image-4"></img></div>
-                <div className="notasidebar">
-                  <div className="conttitsecc">
-                    <div className="titulosecciones sb">Restaurante del mes</div>
-                    <div className="div-block-23"></div>
-                  </div>
-                  <div className="div-block-30">
-                    <div className="divfotosidebar"><img src="images/t0drku550xwpwz554ynsrh45635454255177667500.jpg" className="imgnotasidebar"></img></div>
-                    <div className="pienotasidebar">
-                      <div className="titulosidebar">La buena medida</div>
-                      <div className="subtitulosidebar">Un clásico rosarino</div>
-                    </div>
-                  </div>
-                </div>
-                <div className="publisb"><img src="images/altaGama.jpg" className="image-4"></img></div>
-                <div className="notasidebar">
-                  <div className="conttitsecc">
-                    <div className="titulosecciones sb">Retro</div>
-                    <div className="div-block-23"></div>
-                  </div>
-                  <div className="div-block-30">
-                    <div className="divfotosidebar"><img src="images/doñaPetrona.jpg" srcSet="images/doñaPetrona-p-500.jpeg 500w, images/doñaPetrona.jpg 700w" sizes="(max-width: 479px) 93vw, (max-width: 767px) 49vw, (max-width: 991px) 23vw, 20vw" className="imgnotasidebar"></img></div>
-                    <div className="pienotasidebar">
-                      <div className="titulosidebar">Doña Petrona</div>
-                      <div className="subtitulosidebar">Pionera de la cocina por televisión.</div>
-                    </div>
-                  </div>
-                </div>
-                <div className="publisb"><img src="images/Gato-Dumas-logo12.jpg" className="image-4"></img></div>
-                <div className="notasidebar">
-                  <div className="conttitsecc">
-                    <div className="titulosecciones sb">La frase</div>
-                    <div className="div-block-23"></div>
-                  </div>
-                  <div className="div-block-30">
-                    <div className="divfotosidebar"><img src="images/humphreybogartheadshot.jpg" className="imgnotasidebar"></img></div>
-                    <div className="pienotasidebar">
-                      <div className="titulosidebar">“El mundo entero tiene más o menos tres vasos de vino de retraso” </div>
-                      <div className="subtitulosidebar">Humphrey Bogart</div>
-                    </div>
-                  </div>
-                </div>
-                <div className="publisb"><img src="images/Gato-Dumas-logo12.jpg" className="image-4"></img></div>
-                <div>
-                  <div className="conttitsecc">
-                    <div className="titulosecciones sb">Lo más leído</div>
-                    <div className="div-block-23"></div>
-                  </div>
-                  <div className="divmasleido">
-                    <div className="masleido">
-                    {/* <img src="images/copaWine.png" srcSet="images/copaWine-p-500.png 500w, images/copaWine.png 626w" sizes="(max-width: 479px) 100vw, (max-width: 767px) 240px, (max-width: 991px) 23vw, 19vw" className="imgmasleido"><a href="#" className="txtmasleido">Saurus Rosé-Lanzamiento del nuevo espumante.</a></img>
-                                                                                                                                      <div className="masleido"><img src="images/birra.png" srcSet="images/birra-p-500.png 500w, images/birra-p-800.png 800w, images/birra.png 1000w" sizes="(max-width: 479px) 100vw, (max-width: 767px) 240px, (max-width: 991px) 23vw, 19vw" className="imgmasleido"><a href="#" className="txtmasleido">Saurus Rosé-Lanzamiento del nuevo espumante.</a></img></div>
-                      <div className="masleido"><img src="images/gastroFondo.png" srcSet="images/gastroFondo-p-500.png 500w, images/gastroFondo-p-800.png 800w, images/gastroFondo-p-1080.png 1080w, images/gastroFondo.png 1310w" sizes="(max-width: 479px) 100vw, (max-width: 767px) 240px, (max-width: 991px) 23vw, 19vw" className="imgmasleido"><a href="#" className="txtmasleido">Saurus Rosé-Lanzamiento del nuevo espumante.</a></img></div>
-                      <div className="masleido"><img src="images/cheff.png" srcSet="images/cheff-p-500.png 500w, images/cheff.png 570w" sizes="(max-width: 479px) 100vw, (max-width: 767px) 240px, (max-width: 991px) 23vw, 19vw" className="imgmasleido"><a href="#" className="txtmasleido">Saurus Rosé-Lanzamiento del nuevo espumante.</a></img></div>
-                      <div className="masleido"><img src="images/champu.jpg" srcSet="images/champu-p-500.jpeg 500w, images/champu.jpg 600w" sizes="(max-width: 479px) 100vw, (max-width: 767px) 240px, (max-width: 991px) 23vw, 19vw" className="imgmasleido"><a href="#" className="txtmasleido">Saurus Rosé-Lanzamiento del nuevo espumante.</a></img></div> */}
-                    </div>
-                  </div>
-                  <div className="colaboran">
-                    <div className="conttitsecc">
-                      <div className="titulosecciones sb">Colaboran</div>
-                      <div className="div-block-23"></div>
-                    </div>
-                    <div className="divcolaboran w-clearfix"><img src="images/descarga.jpg" className="imgcolaboran"></img>
-                      <div className="div-block-29">
-                        <div className="text-block-4">Facundo Lastra pedorreti de Legrand</div><a href="#" className="linkcolaboran">Cervecerías artesanales, llegaron para quedarse?</a></div>
-                    </div>
-                    <div className="divcolaboran w-clearfix"><img src="images/descarga.jpg" className="imgcolaboran"></img>
-                      <div className="div-block-29">
-                        <div className="text-block-4">Facundo Lastra</div><a href="#" className="linkcolaboran">Cervecerías artesanales, llegaron para quedarse?</a></div>
-                    </div>
-                    <div className="divcolaboran w-clearfix"><img src="images/descarga.jpg" className="imgcolaboran"></img>
-                      <div className="div-block-29">
-                        <div className="text-block-4">Facundo Lastra</div><a href="#" className="linkcolaboran">Cervecerías artesanales, llegaron para quedarse?</a></div>
-                    </div>
-                    <div className="divcolaboran w-clearfix"><img src="images/descarga.jpg" className="imgcolaboran"></img>
-                      <div className="div-block-29">
-                        <div className="text-block-4">Facundo Lastra</div><a href="#" className="linkcolaboran">Cervecerías artesanales, llegaron para quedarse? SE QUEDARÁN O NO</a></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <Sidebar notas={sidebar} leidas={leidas} autores={autores}/>
             </div>
           </div>
         </div>
