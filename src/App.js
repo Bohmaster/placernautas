@@ -31,7 +31,7 @@ const App = ({ routes, initialData}) => {
                       <div className="text-block">{categoria.nombre}</div>
                     </div>
                     <nav className="dropdownlist w-dropdown-list">
-                      {categoria.subCategoria.map(sub => {
+                      {categoria.subCategoria && categoria.subCategoria.map(sub => {
                         return (
                           <a href="#" className="dropdownlink w-dropdown-link">{sub.nombre}</a>
                         )
@@ -41,9 +41,6 @@ const App = ({ routes, initialData}) => {
                 )
               })
             }
-            <a href="#" className="navlink w-nav-link">multimedia</a>
-            <a href="#" className="navlink w-nav-link">COFRADÍAS</a>
-            <a href="#" className="navlink w-nav-link">BLOG</a>
             <a href="contacto.html" className="navlink w-nav-link">Contacto</a></nav>
           <div className="social"><a href="https://www.facebook.com/Placernautas-194635633972323/?view_public_for=194635633972323" target="_blank" className="linksocial w-inline-block"><img src="/images/face.png"></img></a><a href="#" className="linksocial w-inline-block"><img src="/images/whatt.png"></img></a><a href="#" className="linksocial w-inline-block"><img src="/images/youtube.png"></img></a></div>
           <div className="menu-button w-nav-button"><img src="/images/menuIcon.png" className="image-15"></img></div>

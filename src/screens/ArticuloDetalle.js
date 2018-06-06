@@ -86,8 +86,8 @@ class ArticuloDetalle extends React.Component {
             >
                 <title>{articulo.titulo}</title>
                 <meta name="description" content={articulo.cuerpo}></meta>
-                <meta content={articulo.titulo} property="og:title"/>
-                <meta content={articulo.subtitulo} property="og:description"/>
+                <meta content={articulo.titulo} property="og:title"></meta>
+                <meta content={articulo.subtitulo} property="og:description"></meta>
 
         </Helmet>
     <div className="w-row">
