@@ -11,7 +11,7 @@ class Sidebar extends React.Component {
         return (
         <div className="section-2">
             {notas.map((nota) => (
-                <Link  to={'/articulo/'+nota.id}>
+                <Link className="noStyle" to={'/articulo/'+nota.id} className="noStyle">
                     <div className="notasidebar">
                         <div className="conttitsecc">
                             <div className="titulosecciones sb">{nota.categoria.nombre}</div>
@@ -37,10 +37,12 @@ class Sidebar extends React.Component {
                 <div className="divmasleido">
                         {
                             leidas.map(leida => (
+                                <Link className="noStyle" to={'/articulo/' + leida.id}>
                                 <div className="masleido">
                                     <img src={'http://placernautas.com:3005/api/containers/images/download/' + leida.portada} className="imgmasleido"></img>
-                                    <a href="#" className="txtmasleido">{leida.titulo}</a>
+                                    <span className="txtmasleido">{leida.titulo}</span>
                                 </div>
+                                </Link>
                             ))
                         }
                 </div>
@@ -51,13 +53,15 @@ class Sidebar extends React.Component {
                     </div>
                     {
                         autores.map(autor => (
+                            <Link className="noStyle" to={'/articulo/' + autor.id}>
                             <div className="divcolaboran w-clearfix">
                                 <img src={"http://placernautas.com:3005/api/containers/images/download/" + autor.autor.portada} className="imgcolaboran"></img>
                                 <div className="div-block-29">
                                     <div className="text-block-4">{autor.autor.nombre} {autor.autor.apellido}</div>
-                                    <a href="#" className="linkcolaboran">{autor.titulo}</a>
+                                    <span className="linkcolaboran">{autor.titulo}</span>
                                 </div>
                             </div>
+                            </Link> 
                         ))
                     }
 

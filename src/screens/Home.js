@@ -159,7 +159,7 @@ class Home extends React.Component {
                   <div className="titulosecciones">Destacado</div>
                   <div className="div-block-23"></div>
                 </div>
-                <Link to={'/articulo/' + destacado.id}>
+                <Link className="noStyle" to={'/articulo/' + destacado.id}>
                   <div className="notahome destaca">
                     <div className="headernotahome w-clearfix">
                       <div className="categorianotahome">{destacado.categoria.nombre} - {destacado.subCategoria.nombre}</div>
@@ -191,7 +191,7 @@ class Home extends React.Component {
                   <div className="div-block-23"></div>
                 </div>
                 <div className="_2columnas w-row">
-                <Link to={'/articulo/' + novedades[0].id}>
+                <Link className="noStyle" to={'/articulo/' + novedades[0].id}>
                   <div className="column-8 w-col w-col-6">
                     <div className="notahome chica left">
                       <div className="headernotahome w-clearfix">
@@ -210,7 +210,7 @@ class Home extends React.Component {
                     </div>
                   </div>
                   </Link>
-                  <Link to={'/articulo/' + novedades[1].id}>
+                  <Link className="noStyle" to={'/articulo/' + novedades[1].id}>
                     <div className="column-9 w-col w-col-6">
                       <div className="notahome chica right movil">
                         <div className="headernotahome w-clearfix">
@@ -244,7 +244,7 @@ class Home extends React.Component {
                   <div className="div-block-23"></div>
                 </div>
                 <div className="_2columnas w-row">
-                <Link to={'/articulo/' + notas[0].id}>
+                <Link className="noStyle" to={'/articulo/' + notas[0].id}>
                   <div className="column-8 w-col w-col-6">
                     <div className="notahome chica left">
                       <div className="headernotahome w-clearfix">
@@ -263,7 +263,7 @@ class Home extends React.Component {
                     </div>
                   </div>
                   </Link>
-                  <Link to={'/articulo/' + notas[1].id}>
+                  <Link className="noStyle" to={'/articulo/' + notas[1].id}>
                     <div className="column-9 w-col w-col-6">
                       <div className="notahome chica right movil">
                         <div className="headernotahome w-clearfix">
@@ -297,7 +297,7 @@ class Home extends React.Component {
                   <div className="div-block-23"></div>
                 </div>
                 <div className="_2columnas w-row">
-                <Link to={'/articulo/' + eventos[0].id}>
+                <Link className="noStyle" to={'/articulo/' + eventos[0].id}>
                   <div className="column-8 w-col w-col-6">
                     <div className="notahome chica left">
                       <div className="headernotahome w-clearfix">
@@ -316,7 +316,7 @@ class Home extends React.Component {
                     </div>
                   </div>
                   </Link>
-                  <Link to={'/articulo/' + eventos[1].id}>
+                  <Link className="noStyle" to={'/articulo/' + eventos[1].id}>
                     <div className="column-9 w-col w-col-6">
                       <div className="notahome chica right movil">
                         <div className="headernotahome w-clearfix">

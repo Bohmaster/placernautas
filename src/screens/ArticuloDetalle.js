@@ -78,7 +78,7 @@ class ArticuloDetalle extends React.Component {
   }
 
   render() {
-    const { isLoading, articulo, sidebar, leidas, error } = this.props;
+    const { isLoading, articulo, sidebar, leidas, autores, error } = this.props;
     return (
       <div className="div-block-27">
         <Helmet
@@ -151,7 +151,7 @@ class ArticuloDetalle extends React.Component {
         <div className="div-block-24"><img src="/images/plugFace.png" width="731" srcset="/images/plugFace-p-500.png 500w, /images/plugFace.png 1383w" sizes="(max-width: 479px) 99vw, (max-width: 767px) 98vw, (max-width: 991px) 72vw, (max-width: 2160px) 64vw, 1383px" className="image-14"></img></div>
       </div>
       <div className="column-18 w-clearfix w-col w-col-3 w-col-tiny-tiny-stack">
-        <Sidebar notas={sidebar} leidas={leidas}/>
+        <Sidebar notas={sidebar} leidas={leidas} autores={autores}/>
     </div>
   </div>
   </div>
