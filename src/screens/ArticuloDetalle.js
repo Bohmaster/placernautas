@@ -14,7 +14,7 @@ const loMasLeido = () => {
       limit: 5
     }
   }
-  return axios.get(API + 'articulo', {params})
+  return axios.get(API + 'articulos', {params})
 }
 
 const cargarNotaAutor = () => {
@@ -27,7 +27,7 @@ const cargarNotaAutor = () => {
       limit: 5
     }
   }
-  return axios.get(API + 'articulo', {params})
+  return axios.get(API + 'articulos', {params})
 }
 
 class ArticuloDetalle extends React.Component {
@@ -41,9 +41,9 @@ class ArticuloDetalle extends React.Component {
       }    
     }
     return new Promise((resolve, reject) => {
-     axios.get('http://placernautas.com:3005/api/articulo/' + match.params.articuloId)
+     axios.get('http://placernautas.com:3005/api/articulos/' + match.params.articuloId)
       .then((articulo) => {
-        axios.get('http://placernautas.com:3005/api/articulo', {params})
+        axios.get('http://placernautas.com:3005/api/articulos', {params})
           .then(notas => {
             const params = {
               filter: {
@@ -51,7 +51,7 @@ class ArticuloDetalle extends React.Component {
                 limit: 5
               }
             }
-            axios.get(API + 'articulo', {params})
+            axios.get(API + 'articulos', {params})
               .then(leidas => {
                 cargarNotaAutor()
                   .then(autores => {
@@ -95,9 +95,9 @@ class ArticuloDetalle extends React.Component {
       <div className="column-5 w-col w-col-9 w-col-tiny-tiny-stack">
         <div className="conttitsecc">
         {
-                        articulo[0].subCategoria.nombre     == 'Ninguna' ? 
-                        <div className="titulosecciones">{articulo[0].categoria.nombre}</div>
-                        : <div className="titulosecciones">{articulo[0].categoria.nombre} -? {articulo[0].subCategoria.nombre}</div>
+                        articulo.subCategoria.nombre     == 'Ninguna' ? 
+                        <div className="titulosecciones">{articulo.categoria.nombre}</div>
+                        : <div className="titulosecciones">{articulo.categoria.nombre} - {articulo.subCategoria.nombre}</div>
                     }
           <div className="div-block-23"></div>
         </div>
