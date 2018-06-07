@@ -240,11 +240,11 @@ class Home extends React.Component {
                   </Link>
                 </div>
                 <div className="publis cuerpo">
-                  <div className="logopubli"><img src="images/bodegas.png"></img></div>
+                  {/* <div className="logopubli"><img src="images/bodegas.png"></img></div>
                   <div className="logopubli"><img src="images/chandon2.png"></img></div>
                   <div className="logopubli"><img src="images/luigi.png"></img></div>
                   <div className="logopubli"><img src="images/sal.png"></img></div>
-                  <div className="logopubli"><img src="images/vip.png"></img></div>
+                  <div className="logopubli"><img src="images/vip.png"></img></div> */}
                 </div>
               </div>
               <div className="notasdeautor">
