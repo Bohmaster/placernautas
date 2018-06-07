@@ -12,7 +12,11 @@ import axios from 'axios';
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST);
 const server = express();
 
-const getCategories = () => axios.get('http://200.58.96.175:3005/api/categoria');
+const params = {
+  filter: {include: 'subCategoria'}
+}
+
+const getCategories = () => axios.get('http://200.58.96.175:3005/api/categoria', {params});
 
 // console.log(process.env.RAZZLE_PUBLIC_DIR);
 
@@ -93,6 +97,7 @@ server
                     <script type="text/javascript">!function(o,c){var n=c.documentElement,t=" w-mod-";n.className+=t+"js",("ontouchstart"in o||o.DocumentTouch&&c instanceof DocumentTouch)&&(n.className+=t+"touch")}(window,document);</script>
                     <link href="/images/favicon2.png" rel="shortcut icon" type="image/x-icon">
                     <link href="https://daks2k3a4ib2z.cloudfront.net/img/webclip.png" rel="apple-touch-icon">
+                    <style>.brand2 {display: none;}</style>
                     <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5af98a958ee14d0011069a0c&product=sticky-share-buttons" async="async"></script>
                 </head>
                 <body class="body">
@@ -120,6 +125,36 @@ server
                   <script src="/js/jquery.js" type="text/javascript"></script>
                   <script src="/js/webflow.js" type="text/javascript"></script>
                   <script>
+                      var checked = false;
+                      $(window).scroll(function(event) {
+                        var header = $('.headerall');
+                        var logo   = $('.brand2');
+
+                        console.log(checked, 0);
+                        if ($(this).scrollTop() > 300) {
+                          console.log('mayor')
+                          if (!checked) {
+                            console.log(checked, 1, 'PIJA')
+                            checked = true;
+                            header.animate({
+                              top: "-=100"
+                            }, 1000, function(){
+                              console.log(checked, 2)
+                            })
+                            logo.css("display", "inline-block");
+                          } else {
+                            console.log(checked, 3);
+                          } 
+                        } else {
+                          checked = false;
+                          logo.css("display", "none");
+                          header.animate({
+                            top: "+=100"
+                          }, 1000, function(){
+                            console.log(checked, 2)
+                          })
+                        }
+                      });
                   </script>
                 </body>
             </html>`

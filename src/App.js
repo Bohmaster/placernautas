@@ -22,26 +22,36 @@ const App = ({ routes, initialData}) => {
           </div>
         </div>
         <div data-collapse="medium" data-animation="default" data-duration="400" className="navbar w-nav"><a href="#" className="brand2 w-inline-block"><img src="/images/logo3_1.png" data-w-id="bb5b9569-8261-d4b7-1920-0714fa22ac1c"></img></a><a href="#" className="brand2 movil w-inline-block"><img src="/images/logo3_1.png"></img></a>
-          <nav role="navigation" className="nav-menu w-nav-menu"><a href="index.html" className="navlink w-nav-link w--current">inicio</a>
+          <nav role="navigation" className="nav-menu w-nav-menu"><a href="/" className="navlink w-nav-link w--current">inicio</a>
             {
               initialData.categories.map(categoria => {
                 return (
-                  <div data-hover="1" data-delay="0" className="navlink w-dropdown">
-                    <div className="dropdown-toggle w-dropdown-toggle">
-                      <div className="text-block">{categoria.nombre}</div>
-                    </div>
-                    <nav className="dropdownlist w-dropdown-list">
-                      {categoria.subCategoria && categoria.subCategoria.map(sub => {
-                        return (
-                          <a href="#" className="dropdownlink w-dropdown-link">{sub.nombre}</a>
-                        )
-                      })}
-                    </nav>  
-                  </div>
+                  <span>
+                    {categoria.subCategoria && (categoria.nombre !== "Multimedia") ? (
+                      <div data-hover="1" data-delay="0" className="navlink w-dropdown">
+                        <div className="dropdown-toggle w-dropdown-toggle">
+                          <div className="text-block">{categoria.nombre}</div>
+                        </div>
+                        <nav className="dropdownlist w-dropdown-list">
+                          {categoria.subCategoria.map(sub => {
+                            return (
+                              <a href={'/categoria/' + sub.id} className="dropdownlink w-dropdown-link">
+                                {sub.nombre}
+                              </a>
+                            )
+                          })}
+                        </nav>  
+                      </div>
+                    ) : (
+                      <a href={'/categoria/' + categoria.subCategoria[0].id} className="navlink w-nav-link">{categoria.nombre}</a>
+                    )}
+                    
+                  </span>
                 )
               })
             }
-            <a href="contacto.html" className="navlink w-nav-link">Contacto</a></nav>
+            <a href="contacto.html" className="navlink w-nav-link">Contacto</a>
+          </nav>
           <div className="social"><a href="https://www.facebook.com/Placernautas-194635633972323/?view_public_for=194635633972323" target="_blank" className="linksocial w-inline-block"><img src="/images/face.png"></img></a><a href="#" className="linksocial w-inline-block"><img src="/images/whatt.png"></img></a><a href="#" className="linksocial w-inline-block"><img src="/images/youtube.png"></img></a></div>
           <div className="menu-button w-nav-button"><img src="/images/menuIcon.png" className="image-15"></img></div>
         </div>

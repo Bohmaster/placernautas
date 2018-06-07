@@ -352,50 +352,61 @@ class Home extends React.Component {
             <div className="div-block-23"></div>
           </div>
           <div className="row-7 w-row">
+          <Link className="noStyle" to={'/articulo/' + videos[0].id}>
             <div className="column-16 w-col w-col-6 w-col-medium-6 w-col-small-6">
               <div className="divmultiinicio">
                 <div className="sobrevideo"></div>
                 <div styles="padding-top:56.17021276595745%" id="w-node-206dcb90-eec5-dabb-09c1-a9a8cf7e015c" className="video-2 grande w-video w-embed">
-                  <Iframe url={videos[0].videoUrl} className="embedly-embed" height="350" position="relative"></Iframe>
+                  <Iframe url={videos[0].videoUrl} className="embedly-embed" height="300" position="relative"></Iframe>
                 </div> 
               </div>
             </div>
+          </Link>
+          <Link className="noStyle" to={'/articulo/' + videos[1].id}>
             <div className="column-15 w-col w-col-6 w-col-medium-6 w-col-small-6">
               <div className="divmultiinicio w-clearfix">
                 <div className="sobrevideo der"></div>
                 <div styles="padding-top:56.17021276595745%" id="w-node-1394ca36-23f0-b086-2c5f-92fcbe098abe" className="video-2 der grande w-video w-embed">
-                <Iframe url={videos[1].videoUrl} className="embedly-embed" height="350" position="relative"></Iframe>
+                <Iframe url={videos[1].videoUrl} className="embedly-embed" height="300" position="relative"></Iframe>
                 </div>
               </div>
             </div>
+          </Link>
           </div>
+         
           <div className="row-9 w-row">
+          <Link className="noStyle" to={'/articulo/' + videos[2].id}>
             <div className="w-col w-col-4 w-col-small-4">
               <div className="divmultiinicio">
                 <div className="sobrevideo"></div>
                 <div styles="padding-top:56.17021276595745%" id="w-node-1a515715-767b-43a8-0c02-93165506e96c" className="video-2 w-video w-embed">
-                <Iframe url={videos[2].videoUrl} className="embedly-embed" height="350" position="relative"></Iframe>
+                <Iframe url={videos[2].videoUrl} className="embedly-embed" height="250" position="relative"></Iframe>
                 </div>
               </div>
             </div>
+          </Link>
+          <Link className="noStyle" to={'/articulo/' + videos[3].id}>
             <div className="w-col w-col-4 w-col-small-4">
               <div className="divmultiinicio centro">
                 <div styles="padding-top:56.17021276595745%" id="w-node-2c5adb49-a8b0-ba54-c46f-c1cb14165851" className="video-2 med w-video w-embed">
-                <Iframe url={videos[3].videoUrl} className="embedly-embed" height="350" position="relative"></Iframe>
+                <Iframe url={videos[3].videoUrl} className="embedly-embed" height="250" position="relative"></Iframe>
                 </div>
               </div>
               <div className="divmultiinicio">
                 <div className="sobrevideo"></div>
               </div>
             </div>
+            </Link>
+            <Link className="noStyle" to={'/articulo/' + videos[4].id}>
             <div className="w-col w-col-4 w-col-small-4">
               <div className="divmultiinicio w-clearfix">
                 <div className="sobrevideo der"></div>
                 <div styles="padding-top:56.17021276595745%" id="w-node-ebb6287d-4f8f-16f4-c511-9749a0f6301f" className="video-2 der w-video w-embed">
-                <Iframe url={videos[4].videoUrl} className="embedly-embed" height="350" position="relative"></Iframe>
+                <Iframe url={videos[4].videoUrl} className="embedly-embed" height="250" position="relative"></Iframe>
                 </div>
               </div>
             </div>
+            </Link>
           </div>
           <div className="publis cuerpo">
             <div className="logopubli"><img src="images/bodegas.png"></img></div>
