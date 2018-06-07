@@ -27,7 +27,7 @@ const App = ({ routes, initialData}) => {
               initialData.categories.map(categoria => {
                 return (
                   <span>
-                    {categoria.subCategoria && (categoria.nombre !== "Multimedia") ? (
+                    {categoria.subCategoria && (categoria.nombre !== "Multimedia" || "Cofradías") ? (
                       <div data-hover="1" data-delay="0" className="navlink w-dropdown">
                         <div className="dropdown-toggle w-dropdown-toggle">
                           <div className="text-block">{categoria.nombre}</div>

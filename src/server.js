@@ -148,11 +148,11 @@ server
                         } else {
                           checked = false;
                           logo.css("display", "none");
-                          header.animate({
-                            top: "+=100"
-                          }, 1000, function(){
-                            console.log(checked, 2)
-                          })
+                          // header.animate({
+                          //   top: "+=100"
+                          // }, 1000, function(){
+                          //   console.log(checked, 2)
+                          // })
                         }
                       });
                   </script>
