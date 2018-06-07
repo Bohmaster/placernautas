@@ -125,23 +125,25 @@ class Home extends React.Component {
                 <title>Bebidas, gastronomía y otros placeres | Placernautas</title>
         </Helmet>
         <div data-autoplay="true" data-loop="true" data-wf-ignore="true" className="background-video w-background-video w-background-video-atom">
+          <div styles={{position: 'relative'}}>
+          <div className="div-block-12">
+              <h1 className="heading-4">La comunidad de los navegantes del placer</h1>
+          </div>
+
           <Video autoPlay loop muted
+              styles={{width: '100%'}}
               poster="http://sourceposter.jpg"
               onCanPlayThrough={() => {
                   // Do stuff
               }}>
               <source src="videos/placernautasLento-transcode.webm" type="video/webm" />
-              <h1 className="heading-4">La comunidad de los navegantes del placer</h1>
           </Video>
+          </div>
         <div className="div-block-3">
           <div className="busqueda celu">
             <div className="div-block-11">Buscar...</div><img src="images/cheffBuscar.png" width="56" className="image-9"></img></div>
           <div className="div-block-13">
-            <div className="div-block-12">
-              <div className="libea"></div><img src="images/logo3_1.png" width="951" className="image-10"></img>
-              <div className="libea arriba"></div>
-              <p className="paragraph">Si mal no recuerdo, son cinco los motivos para beber: la llegada de un amigo, la sed del momento</p>
-            </div>
+            
            
           </div>
         </div>

@@ -806,6 +806,7 @@ p iframe {
 .div-block-12 {
   position: relative;
   width: 70%;
+  text-align: center;
 }
 
 .image-10 {
@@ -836,10 +837,12 @@ p iframe {
 }
 
 .heading-4 {
-  position: relative;
-  left: 0px;
-  margin-top: 0px;
-  padding: 0px 10px 5px;
+  position: absolute;
+  width: 400px;
+  top: 100px;
+  /* left: 0px; */
+  /* margin-top: 0px; */
+  /* padding: 0px 10px 5px; */
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
@@ -849,6 +852,9 @@ p iframe {
   font-family: Merriweather, serif;
   font-size: 33px;
   font-weight: 300;
+  z-index: 1;
+  display: inline-block;
+  text-align: center;
 }
 
 .dropdown-toggle {

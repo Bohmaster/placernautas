@@ -88,7 +88,7 @@ class ArticuloDetalle extends React.Component {
                 <meta name="description" content={articulo.cuerpo}></meta>
                 <meta content={articulo.titulo} property="og:title"></meta>
                 <meta content={articulo.subtitulo} property="og:description"></meta>
-                <meta content={'http://placernautas.com:3005/api/containers/images/download/' + articulo.portada} property="og:description"></meta>
+                <meta content={'http://placernautas.com:3005/api/containers/images/download/' + articulo.portada} property="og:image"></meta>
 
         </Helmet>
     <div className="w-row">
@@ -152,7 +152,7 @@ class ArticuloDetalle extends React.Component {
           </div>
           <script async="" src="https://static.addtoany.com/menu/page.js"></script>
         </div>
-        <div className="dejanostucomentario">Dejanos tu comentario</div>
+        {/* <div className="dejanostucomentario">Dejanos tu comentario</div> */}
         <div className="div-block-24">
           <div class="fb-comments" data-href={fullUrl} data-numposts="5"></div>
         </div>
