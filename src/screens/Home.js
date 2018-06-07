@@ -293,11 +293,11 @@ class Home extends React.Component {
                   </Link>
                 </div>
                 <div className="publis cuerpo">
-                  <div className="logopubli"><img src="images/bodegas.png"></img></div>
+                  {/* <div className="logopubli"><img src="images/bodegas.png"></img></div>
                   <div className="logopubli"><img src="images/chandon2.png"></img></div>
                   <div className="logopubli"><img src="images/luigi.png"></img></div>
                   <div className="logopubli"><img src="images/sal.png"></img></div>
-                  <div className="logopubli"><img src="images/vip.png"></img></div>
+                  <div className="logopubli"><img src="images/vip.png"></img></div> */}
                 </div>
               </div>
               <div className="eventos">
@@ -348,11 +348,11 @@ class Home extends React.Component {
               </div>
               <div className="notasdeautor">
                 <div className="publis cuerpo">
-                  <div className="logopubli"><img src="images/bodegas.png"></img></div>
+                  {/* <div className="logopubli"><img src="images/bodegas.png"></img></div>
                   <div className="logopubli"><img src="images/chandon2.png"></img></div>
                   <div className="logopubli"><img src="images/luigi.png"></img></div>
                   <div className="logopubli"><img src="images/sal.png"></img></div>
-                  <div className="logopubli"><img src="images/vip.png"></img></div>
+                  <div className="logopubli"><img src="images/vip.png"></img></div> */}
                 </div>
               </div>
               <div className="videodestacado">
@@ -418,11 +418,11 @@ class Home extends React.Component {
             </Link>
           </div>
           <div className="publis cuerpo">
-            <div className="logopubli"><img src="images/bodegas.png"></img></div>
+            {/* <div className="logopubli"><img src="images/bodegas.png"></img></div>
             <div className="logopubli"><img src="images/chandon2.png"></img></div>
             <div className="logopubli"><img src="images/luigi.png"></img></div>
             <div className="logopubli"><img src="images/sal.png"></img></div>
-            <div className="logopubli"><img src="images/vip.png"></img></div>
+            <div className="logopubli"><img src="images/vip.png"></img></div> */}
           </div>
           <div className="text-block-6">Formá parte de nuestra comunidad. Publicá en Placernautas.</div>
         </div>
