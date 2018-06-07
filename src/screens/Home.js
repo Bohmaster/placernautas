@@ -175,7 +175,7 @@ class Home extends React.Component {
                 <Link className="noStyle" to={'/articulo/' + destacado.id}>
                   <div className="notahome destaca">
                     <div className="headernotahome w-clearfix">
-                      <div className="categorianotahome">{destacado.categoria.nombre} - {destacado.subCategoria.nombre !== "Ninguna" && destacado.subCategoria.nombre}</div>
+                      <div className="categorianotahome">{destacado.categoria.nombre} {destacado.subCategoria.nombre !== "Ninguna" && ' - ' + destacado.subCategoria.nombre}</div>
                       <div className="fechanotahome">{new Date(destacado.fecha).toLocaleDateString()}</div>
                     </div>
                     <div data-w-id="88a275c2-df0e-7697-0fc4-6c5d4497cf5c" className="sobrenotahome"></div>
@@ -191,11 +191,7 @@ class Home extends React.Component {
                   </div>
                 </Link>
                 <div className="publis cuerpo chica">
-                  <div className="logopubli pequea"><img src="images/bodegas.png"></img></div>
-                  <div className="logopubli"><img src="images/chandon2.png"></img></div>
-                  <div className="logopubli"><img src="images/luigi.png"></img></div>
-                  <div className="logopubli"><img src="images/sal.png"></img></div>
-                  <div className="logopubli"><img src="images/vip.png"></img></div>
+
                 </div>
               </div>
               <div className="novedades" onClick={this.click}>

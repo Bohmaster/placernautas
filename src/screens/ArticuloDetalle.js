@@ -101,7 +101,7 @@ class ArticuloDetalle extends React.Component {
                     }
           <div className="div-block-23"></div>
         </div>
-        <div className="notasrelac">Otros artìculos relacionados</div>
+        {/* <div className="notasrelac">Otros artìculos relacionados</div>
         <div className="w-row">
           <div className="w-col w-col-3 w-col-small-3 w-col-tiny-6">
             <div className="notarelacionada _1"><img src="/images/6a00d8341c85cd53ef01b7c94ea3a0970b.jpg"></img>
@@ -127,7 +127,7 @@ class ArticuloDetalle extends React.Component {
               <div className="subtnotarelacionada">Burbujas del fin del mundo.</div>
             </div>
           </div>
-        </div>
+        </div> */}
         <div className="divencabezadonota">
           <h1 className="titnota">{articulo.titulo}</h1>
           <div className="divdatosnota"></div>
