@@ -6,6 +6,9 @@ import Iframe from 'react-iframe';
 import Helmet from 'react-helmet';
 import Sidebar from '../components/Sidebar';
 
+import { DefaultPlayer as Video } from 'react-html5video';
+import 'react-html5video/dist/styles.css';
+
 const API = 'http://placernautas.com:3005/api/';
 
 console.log();
@@ -113,7 +116,7 @@ class Home extends React.Component {
   }
 
   render() {
-    const { isLoading, destacado, novedades, notas, eventos, videos, sidebar, leidas, autores, error } = this.props;
+    const { isLoading, fullUrl,destacado, novedades, notas, eventos, videos, sidebar, leidas, autores, error } = this.props;
     return (
       <div>
         <Helmet
@@ -121,7 +124,15 @@ class Home extends React.Component {
             >
                 <title>Bebidas, gastronomía y otros placeres | Placernautas</title>
         </Helmet>
-        <div data-poster-url="videos/placernautasLento-poster-00001.jpg" data-video-urls="videos/placernautasLento-transcode.webm,videos/placernautasLento-transcode.mp4" data-autoplay="true" data-loop="true" data-wf-ignore="true" className="background-video w-background-video w-background-video-atom"><video autoPlay="true" loop="true" styless={{backgroundImage:"url('videos/placernautasLent-poster-00001.jpg')"}} muted="" data-wf-ignore="true"><source src="videos/placernautasLento-transcode.webm" data-wf-ignore="true"></source><source src="videos/placernautasLento-transcode.mp4" data-wf-ignore="true"></source></video>
+        <div data-autoplay="true" data-loop="true" data-wf-ignore="true" className="background-video w-background-video w-background-video-atom">
+          <Video autoPlay loop muted
+              poster="http://sourceposter.jpg"
+              onCanPlayThrough={() => {
+                  // Do stuff
+              }}>
+              <source src="videos/placernautasLento-transcode.webm" type="video/webm" />
+              <h1 className="heading-4">La comunidad de los navegantes del placer</h1>
+          </Video>
         <div className="div-block-3">
           <div className="busqueda celu">
             <div className="div-block-11">Buscar...</div><img src="images/cheffBuscar.png" width="56" className="image-9"></img></div>
@@ -131,7 +142,7 @@ class Home extends React.Component {
               <div className="libea arriba"></div>
               <p className="paragraph">Si mal no recuerdo, son cinco los motivos para beber: la llegada de un amigo, la sed del momento</p>
             </div>
-            <h1 className="heading-4">La comunidad de los navegantes del placer</h1>
+           
           </div>
         </div>
       </div>
@@ -163,7 +174,7 @@ class Home extends React.Component {
                   <div className="notahome destaca">
                     <div className="headernotahome w-clearfix">
                       <div className="categorianotahome">{destacado.categoria.nombre} - {destacado.subCategoria.nombre}</div>
-                      <div className="fechanotahome">{destacado.fecha}</div>
+                      <div className="fechanotahome">{new Date(destacado.fecha).toLocaleDateString()}</div>
                     </div>
                     <div data-w-id="88a275c2-df0e-7697-0fc4-6c5d4497cf5c" className="sobrenotahome"></div>
                     <div className="subheadernotahome w-clearfix">
@@ -196,11 +207,11 @@ class Home extends React.Component {
                     <div className="notahome chica left">
                       <div className="headernotahome w-clearfix">
                         <div className="categorianotahome">{novedades[0].categoria.nombre}</div>
-                        <div className="fechanotahome">{novedades[0].fecha}</div>
+                        <div className="fechanotahome">{new Date(novedades[0].fecha).toLocaleDateString()}</div>
                       </div>
                       <div className="sobrenotahome"></div>
                       <div className="subheadernotahome w-clearfix">
-                        <div className="autornotahome">Por {novedades[0].autor.nombre}</div><img src="images/descarga.jpg" className="fotoautornotahome"></img></div>
+                        <div className="autornotahome">Por {novedades[0].autor.nombre} {novedades[0].autor.apellido}</div><img src="images/descarga.jpg" className="fotoautornotahome"></img></div>
                       <div className="wrapperfotonotahome">
                         <div className="pienotahome">
                           <div className="titulonotahome small">{novedades[0].titulo}</div>
@@ -215,11 +226,11 @@ class Home extends React.Component {
                       <div className="notahome chica right movil">
                         <div className="headernotahome w-clearfix">
                           <div className="categorianotahome phone">{novedades[1].categoria.nombre}</div>
-                          <div className="fechanotahome">{novedades[1].fecha}</div>
+                          <div className="fechanotahome">{new Date(novedades[1].fecha).toLocaleDateString()}</div>
                         </div>
                         <div className="sobrenotahome"></div>
                         <div className="subheadernotahome w-clearfix">
-                          <div className="autornotahome">Por {novedades[1].autor.nombre}</div><img src="images/descarga.jpg" className="fotoautornotahome"></img></div>
+                          <div className="autornotahome">Por {novedades[1].autor.nombre} {novedades[1].autor.apellido}</div><img src="images/descarga.jpg" className="fotoautornotahome"></img></div>
                         <div className="wrapperfotonotahome">
                           <div className="pienotahome">
                           <div className="titulonotahome small">{novedades[1].titulo}</div>
@@ -249,7 +260,7 @@ class Home extends React.Component {
                     <div className="notahome chica left">
                       <div className="headernotahome w-clearfix">
                         <div className="categorianotahome">{notas[0].categoria.nombre}</div>
-                        <div className="fechanotahome">{notas[0].fecha}</div>
+                        <div className="fechanotahome">{new Date(notas[0].fecha).toLocaleDateString()}</div>
                       </div>
                       <div className="sobrenotahome"></div>
                       <div className="subheadernotahome w-clearfix">
@@ -268,7 +279,7 @@ class Home extends React.Component {
                       <div className="notahome chica right movil">
                         <div className="headernotahome w-clearfix">
                           <div className="categorianotahome phone">{notas[1].categoria.nombre}</div>
-                          <div className="fechanotahome">{notas[1].fecha}</div>
+                          <div className="fechanotahome">{new Date(notas[0].fecha).toLocaleDateString()}</div>
                         </div>
                         <div className="sobrenotahome"></div>
                         <div className="subheadernotahome w-clearfix">
@@ -302,7 +313,7 @@ class Home extends React.Component {
                     <div className="notahome chica left">
                       <div className="headernotahome w-clearfix">
                         <div className="categorianotahome">{eventos[0].categoria.nombre}</div>
-                        <div className="fechanotahome">{eventos[0].fecha}</div>
+                        <div className="fechanotahome">{new Date(eventos[0].fecha).toLocaleDateString()}</div>
                       </div>
                       <div className="sobrenotahome"></div>
                       <div className="subheadernotahome w-clearfix">
@@ -321,7 +332,7 @@ class Home extends React.Component {
                       <div className="notahome chica right movil">
                         <div className="headernotahome w-clearfix">
                           <div className="categorianotahome phone">{eventos[1].categoria.nombre}</div>
-                          <div className="fechanotahome">{eventos[1].fecha}</div>
+                          <div className="fechanotahome">{new Date(eventos[1].fecha).toLocaleDateString()}</div>
                         </div>
                         <div className="sobrenotahome"></div>
                         <div className="subheadernotahome w-clearfix">

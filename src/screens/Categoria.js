@@ -102,9 +102,9 @@ class Categoria extends React.Component {
             <div className="column-5 w-col w-col-9 w-col-tiny-tiny-stack">
               <div className="conttitsecc">
                     {
-                        articulos[0].subCategoria.nombre == 'Ninguna' ? 
+                        articulos[0].subCategoria.nombre     == 'Ninguna' ? 
                         <div className="titulosecciones">{articulos[0].categoria.nombre}</div>
-                        : <div className="titulosecciones">{articulos[0].categoria.nombre} -? {articulos[0].subCategoria.nombre}</div>
+                        : <div className="titulosecciones">{articulos[0].categoria.nombre} - {articulos[0].subCategoria.nombre}</div>
                     }
                 <div className="div-block-23"></div>
               </div>
@@ -116,11 +116,11 @@ class Categoria extends React.Component {
                       <div className="notahome chica left">
                         <div className="headernotahome w-clearfix">
                           <div className="categorianotahome">{articulo[0].categoria.nombre}</div>
-                          <div className="fechanotahome">{articulo[0].fecha}</div>
+                          <div className="fechanotahome">{new Date(articulo[0].fecha).toLocaleDateString()}</div>
                         </div>
                         <div className="sobrenotahome"></div>
                         <div className="subheadernotahome w-clearfix">
-                          <div className="autornotahome">Por {articulo[0].autor.nombre}</div><img src={'http://placernautas.com:3005/api/containers/images/' + articulo[0].autor.portada} className="fotoautornotahome"></img></div>
+                          <div className="autornotahome">Por {articulo[0].autor.nombre} {articulo[0].autor.apellido}</div><img src={'http://placernautas.com:3005/api/containers/images/download/' + articulo[0].autor.portada} className="fotoautornotahome"></img></div>
                         <div className="wrapperfotonotahome">
                           <div className="pienotahome">
                             <div className="titulonotahome small">{articulo[0].titulo}</div>
@@ -135,7 +135,7 @@ class Categoria extends React.Component {
                         <div className="notahome chica right movil">
                           <div className="headernotahome w-clearfix">
                             <div className="categorianotahome phone">{articulo[1].categoria.nombre}</div>
-                            <div className="fechanotahome">{articulo[1].fecha}</div>
+                            <div className="fechanotahome">{new Date(articulo[1].fecha).toLocaleDateString()}</div>
                           </div>
                           <div className="sobrenotahome"></div>
                           <div className="subheadernotahome w-clearfix">

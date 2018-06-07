@@ -62,10 +62,11 @@ server
         const context = {};
         const categories = data.pop();
         data.categories = categories.data;
+        const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
         // Pass our routes and data array to our App component
         const markup = renderToString(
           <StaticRouter context={context} location={req.url}>
-            <App routes={routes} initialData={data} />
+            <App routes={routes} initialData={data} fullUrl={fullUrl} />
           </StaticRouter>
         );
         const helmet = Helmet.renderStatic();
@@ -101,6 +102,14 @@ server
                     <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5af98a958ee14d0011069a0c&product=sticky-share-buttons" async="async"></script>
                 </head>
                 <body class="body">
+                <div id="fb-root"></div>
+                <script>(function(d, s, id) {
+                  var js, fjs = d.getElementsByTagName(s)[0];
+                  if (d.getElementById(id)) return;
+                  js = d.createElement(s); js.id = id;
+                  js.src = 'https://connect.facebook.net/es_ES/sdk.js#xfbml=1&version=v3.0&appId=1825849397436654&autoLogAppEvents=1';
+                  fjs.parentNode.insertBefore(js, fjs);
+                }(document, 'script', 'facebook-jssdk'));</script>
                   <div class="share">
                     <div class="html-embed w-embed w-script">
                       <!--  AddToAny BEGIN  -->
@@ -138,21 +147,23 @@ server
                         checked = true;
                         header.animate({
                           top: "-=100"
-                        }, 1000, function(){
+                        }, 500, function(){
                           console.log(checked, 2)
                         })
                         logo.css("display", "inline-block");
                       } else {
                         console.log(checked, 3);
                       }
-                    } else {
-                      checked = false;
-                      logo.css("display", "none");
-                      //header.animate({
-                        //top: "+=100"
-                      //}, 1000, function(){
-                        //console.log(checked, 2)
-                      //})
+                    } else if ($(this).scrollTop() < 300) {
+                      if (checked) {
+                        checked = false;
+                        logo.css("display", "none");
+                        header.animate({
+                          top: "+=100"
+                        }, 500, function(){
+                          console.log(checked, 2)
+                        })
+                      }
                     }
                   });
                   </script>

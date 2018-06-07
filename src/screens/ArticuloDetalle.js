@@ -78,7 +78,7 @@ class ArticuloDetalle extends React.Component {
   }
 
   render() {
-    const { isLoading, articulo, sidebar, leidas, autores, error } = this.props;
+    const { isLoading, fullUrl, articulo, sidebar, leidas, autores, error } = this.props;
     return (
       <div className="div-block-27">
         <Helmet
@@ -135,7 +135,7 @@ class ArticuloDetalle extends React.Component {
         <h2 className="subtnota">{articulo.subtilo}</h2>
         <div className="div-block-15 w-clearfix">
           <div className="text-block-2">Por {articulo.autor.nombre} {articulo.autor.apellido}</div>
-          <div className="txtdatonota">{articulo.fecha}</div>
+          <div className="txtdatonota">{new Date(articulo.fecha).toLocaleDateString()}</div>
           <img src={'http://placernautas.com:3005/api/containers/images/download/' + articulo.autor.portada} className="fotoautornotahome"></img></div>
           <img src={'http://placernautas.com:3005/api/containers/images/download/' + articulo.portada} className="fotonota1"></img>
         <p className="parrnota" dangerouslySetInnerHTML={{__html: articulo.cuerpo}}>
@@ -153,7 +153,9 @@ class ArticuloDetalle extends React.Component {
           <script async="" src="https://static.addtoany.com/menu/page.js"></script>
         </div>
         <div className="dejanostucomentario">Dejanos tu comentario</div>
-        <div className="div-block-24"><img src="/images/plugFace.png" width="731" srcset="/images/plugFace-p-500.png 500w, /images/plugFace.png 1383w" sizes="(max-width: 479px) 99vw, (max-width: 767px) 98vw, (max-width: 991px) 72vw, (max-width: 2160px) 64vw, 1383px" className="image-14"></img></div>
+        <div className="div-block-24">
+          <div class="fb-comments" data-href={fullUrl} data-numposts="5"></div>
+        </div>
       </div>
       <div className="column-18 w-clearfix w-col w-col-3 w-col-tiny-tiny-stack">
         <Sidebar notas={sidebar} leidas={leidas} autores={autores}/>

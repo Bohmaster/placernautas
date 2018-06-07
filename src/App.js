@@ -5,7 +5,13 @@ import React from 'react';
 import Route from 'react-router-dom/Route';
 import Switch from 'react-router-dom/Switch';
 
-const App = ({ routes, initialData}) => {
+const categoriasBanneadas = [
+  'Multimedia',
+  'Cofradías'
+]
+
+
+const App = ({ routes, initialData, fullUrl}) => {
   return routes
     ? <div className="App">
       <div data-w-id="bb5b9569-8261-d4b7-1920-0714fa22ac08" className="headerall">
@@ -27,7 +33,7 @@ const App = ({ routes, initialData}) => {
               initialData.categories.map(categoria => {
                 return (
                   <span>
-                    {categoria.subCategoria && (categoria.nombre !== ("Multimedia" || "Cofradías")) ? (
+                    {categoria.subCategoria && !categoriasBanneadas.includes(categoria.nombre) ? (
                       <div data-hover="1" data-delay="0" className="navlink w-dropdown">
                         <div className="dropdown-toggle w-dropdown-toggle">
                           <div className="text-block">{categoria.nombre}</div>
@@ -82,6 +88,7 @@ const App = ({ routes, initialData}) => {
                   React.createElement(route.component, {
                     ...props,
                     initialData: initialData[index] || null,
+                    fullUrl: fullUrl
                   })}
               />
             );
