@@ -125,36 +125,36 @@ server
                   <script src="/js/jquery.js" type="text/javascript"></script>
                   <script src="/js/webflow.js" type="text/javascript"></script>
                   <script>
-                      var checked = false;
-                      $(window).scroll(function(event) {
-                        var header = $('.headerall');
-                        var logo   = $('.brand2');
+                  var checked = false;
+                  $(window).scroll(function(event) {
+                    var header = $('.headerall');
+                    var logo   = $('.brand2');
 
-                        console.log(checked, 0);
-                        if ($(this).scrollTop() > 300) {
-                          console.log('mayor')
-                          if (!checked) {
-                            console.log(checked, 1, 'PIJA')
-                            checked = true;
-                            header.animate({
-                              top: "-=100"
-                            }, 1000, function(){
-                              console.log(checked, 2)
-                            })
-                            logo.css("display", "inline-block");
-                          } else {
-                            console.log(checked, 3);
-                          } 
-                        } else {
-                          checked = false;
-                          logo.css("display", "none");
-                          // header.animate({
-                          //   top: "+=100"
-                          // }, 1000, function(){
-                          //   console.log(checked, 2)
-                          // })
-                        }
-                      });
+                    console.log(checked, 0);
+                    if ($(this).scrollTop() > 300) {
+                      console.log('mayor')
+                      if (!checked) {
+                        console.log(checked, 1, 'PIJA')
+                        checked = true;
+                        header.animate({
+                          top: "-=100"
+                        }, 1000, function(){
+                          console.log(checked, 2)
+                        })
+                        logo.css("display", "inline-block");
+                      } else {
+                        console.log(checked, 3);
+                      }
+                    } else {
+                      checked = false;
+                      logo.css("display", "none");
+                      //header.animate({
+                        //top: "+=100"
+                      //}, 1000, function(){
+                        //console.log(checked, 2)
+                      //})
+                    }
+                  });
                   </script>
                 </body>
             </html>`
