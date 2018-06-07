@@ -158,11 +158,11 @@ class Home extends React.Component {
         </div>
         <div className="div-block-19"></div>
         <div className="publis cuerpo">
-          <div className="logopubli"><img src="images/bodegas.png"></img></div>
+          {/* <div className="logopubli"><img src="images/bodegas.png"></img></div>
           <div className="logopubli"><img src="images/chandon2.png"></img></div>
           <div className="logopubli"><img src="images/luigi.png"></img></div>
           <div className="logopubli"><img src="images/sal.png"></img></div>
-          <div className="logopubli"><img src="images/vip.png"></img></div>
+          <div className="logopubli"><img src="images/vip.png"></img></div> */}
         </div>
         <div className="divpagina">
           <div className="row-2 w-row">
@@ -175,7 +175,7 @@ class Home extends React.Component {
                 <Link className="noStyle" to={'/articulo/' + destacado.id}>
                   <div className="notahome destaca">
                     <div className="headernotahome w-clearfix">
-                      <div className="categorianotahome">{destacado.categoria.nombre} - {destacado.subCategoria.nombre}</div>
+                      <div className="categorianotahome">{destacado.categoria.nombre} - {destacado.subCategoria.nombre !== "Ninguna" && destacado.subCategoria.nombre}</div>
                       <div className="fechanotahome">{new Date(destacado.fecha).toLocaleDateString()}</div>
                     </div>
                     <div data-w-id="88a275c2-df0e-7697-0fc4-6c5d4497cf5c" className="sobrenotahome"></div>
@@ -213,7 +213,7 @@ class Home extends React.Component {
                       </div>
                       <div className="sobrenotahome"></div>
                       <div className="subheadernotahome w-clearfix">
-                        <div className="autornotahome">Por {novedades[0].autor.nombre} {novedades[0].autor.apellido}</div><img src="images/descarga.jpg" className="fotoautornotahome"></img></div>
+                        <div className="autornotahome">Por {novedades[0].autor.nombre} {novedades[0].autor.apellido}</div><img src={'http://placernautas.com:3005/api/containers/images/download/' + novedades[0].autor.portada} className="fotoautornotahome"></img></div>
                       <div className="wrapperfotonotahome">
                         <div className="pienotahome">
                           <div className="titulonotahome small">{novedades[0].titulo}</div>
@@ -232,7 +232,7 @@ class Home extends React.Component {
                         </div>
                         <div className="sobrenotahome"></div>
                         <div className="subheadernotahome w-clearfix">
-                          <div className="autornotahome">Por {novedades[1].autor.nombre} {novedades[1].autor.apellido}</div><img src="images/descarga.jpg" className="fotoautornotahome"></img></div>
+                          <div className="autornotahome">Por {novedades[1].autor.nombre} {novedades[1].autor.apellido}</div><img src={'http://placernautas.com:3005/api/containers/images/download/' + novedades[1].autor.portada} className="fotoautornotahome"></img></div>
                         <div className="wrapperfotonotahome">
                           <div className="pienotahome">
                           <div className="titulonotahome small">{novedades[1].titulo}</div>
@@ -266,7 +266,7 @@ class Home extends React.Component {
                       </div>
                       <div className="sobrenotahome"></div>
                       <div className="subheadernotahome w-clearfix">
-                        <div className="autornotahome">Por {notas[0].autor.nombre}</div><img src="images/descarga.jpg" className="fotoautornotahome"></img></div>
+                        <div className="autornotahome">Por {notas[0].autor.nombre} {notas[0].autor.apellido}</div><img src={'http://placernautas.com:3005/api/containers/images/download/' + notas[0].autor.portada} className="fotoautornotahome"></img></div>
                       <div className="wrapperfotonotahome">
                         <div className="pienotahome">
                           <div className="titulonotahome small">{notas[0].titulo}</div>
@@ -285,7 +285,7 @@ class Home extends React.Component {
                         </div>
                         <div className="sobrenotahome"></div>
                         <div className="subheadernotahome w-clearfix">
-                          <div className="autornotahome">Por {notas[1].autor.nombre}</div><img src="images/descarga.jpg" className="fotoautornotahome"></img></div>
+                          <div className="autornotahome">Por {notas[1].autor.nombre} {notas[1].autor.apellido}</div><img src={'http://placernautas.com:3005/api/containers/images/download/' + notas[1].autor.portada} className="fotoautornotahome"></img></div>
                         <div className="wrapperfotonotahome">
                           <div className="pienotahome">
                           <div className="titulonotahome small">{notas[1].titulo}</div>
@@ -319,7 +319,7 @@ class Home extends React.Component {
                       </div>
                       <div className="sobrenotahome"></div>
                       <div className="subheadernotahome w-clearfix">
-                        <div className="autornotahome">Por {eventos[0].autor.nombre}</div><img src="images/descarga.jpg" className="fotoautornotahome"></img></div>
+                        <div className="autornotahome">Por {eventos[0].autor.nombre} {eventos[0].autor.apellido}</div><img src={'http://placernautas.com:3005/api/containers/images/download/' + eventos[0].autor.portada} className="fotoautornotahome"></img></div>
                       <div className="wrapperfotonotahome">
                         <div className="pienotahome">
                           <div className="titulonotahome small">{eventos[0].titulo}</div>
@@ -338,7 +338,7 @@ class Home extends React.Component {
                         </div>
                         <div className="sobrenotahome"></div>
                         <div className="subheadernotahome w-clearfix">
-                          <div className="autornotahome">Por {eventos[1].autor.nombre}</div><img src="images/descarga.jpg" className="fotoautornotahome"></img></div>
+                          <div className="autornotahome">Por {eventos[1].autor.nombre} {eventos[1].autor.apellidoº}</div><img src={'http://placernautas.com:3005/api/containers/images/download/' + eventos[1].autor.portada} className="fotoautornotahome"></img></div>
                         <div className="wrapperfotonotahome">
                           <div className="pienotahome">
                           <div className="titulonotahome small">{eventos[1].titulo}</div>
