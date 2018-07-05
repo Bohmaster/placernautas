@@ -11,7 +11,10 @@ const loMasLeido = () => {
   const params = {
     filter: {
       order: 'visitas DESC',
-      limit: 5
+      limit: 5,
+      fields: {
+        cuerpo: false
+      }
     }
   }
   return axios.get(API + 'articulos', {params})
@@ -24,7 +27,10 @@ const cargarNotaAutor = () => {
         esNotaAutor: true,
       },
       order: 'fecha DESC',
-      limit: 5
+      limit: 8,
+      fields: {
+        cuerpo: false
+      }
     }
   }
   return axios.get(API + 'articulos', {params})
@@ -37,8 +43,18 @@ class ArticuloDetalle extends React.Component {
       filter: {
         where: { sidebar: true },
         order: ['posicionSidebar ASC', 'fecha DESC'],
-        limit: 6
+        limit: 6,
+        fields: {
+          cuerpo: false
+        }
       }    
+    }
+    const detailParams = {
+      filter: {
+        where: {
+          id: match.params.articuloId
+        }
+      }
     }
     return new Promise((resolve, reject) => {
      axios.get('http://placernautas.com:3005/api/articulos/' + match.params.articuloId)
@@ -48,7 +64,10 @@ class ArticuloDetalle extends React.Component {
             const params = {
               filter: {
                 order: 'visitas DESC',
-                limit: 5
+                limit: 5,
+                fields: {
+                  cuerpo: false
+                }
               }
             }
             axios.get(API + 'articulos', {params})
@@ -84,8 +103,8 @@ class ArticuloDetalle extends React.Component {
         <Helmet
             defaultTitle="Admin"
             >
-                <title>{articulo.titulo}</title>
-                <meta name="description" content={articulo.cuerpo}></meta>
+                <title>{articulo.titulo + ' - ' + articulo.subtitulo}</title>
+                <meta name="description" content={articulo.titulo + '.' + articulo.subtitulo}></meta>
                 <meta content={articulo.titulo} property="og:title"></meta>
                 <meta content={articulo.subtitulo} property="og:description"></meta>
                 <meta content={'http://placernautas.com:3005/api/containers/images/download/' + articulo.portada} property="og:image"></meta>
@@ -129,10 +148,11 @@ class ArticuloDetalle extends React.Component {
           </div>
         </div> */}
         <div className="divencabezadonota">
+
           <h1 className="titnota">{articulo.titulo}</h1>
           <div className="divdatosnota"></div>
         </div>
-        <h2 className="subtnota">{articulo.subtilo}</h2>
+        <h2 className="subtnota">{articulo.subtitulo}</h2>
         <div className="div-block-15 w-clearfix">
           <div className="text-block-2">Por {articulo.autor.nombre} {articulo.autor.apellido}</div>
           <div className="txtdatonota">{new Date(articulo.fecha).toLocaleDateString()}</div>
@@ -152,9 +172,8 @@ class ArticuloDetalle extends React.Component {
           </div>
           <script async="" src="https://static.addtoany.com/menu/page.js"></script>
         </div>
-        {/* <div className="dejanostucomentario">Dejanos tu comentario</div> */}
-        <div className="div-block-24">
-          <div class="fb-comments" data-href={fullUrl} data-numposts="5"></div>
+        <div className="dejanostucomentario">Dejanos tu comentario</div>
+        <div className="div-block-24" id="facebook-comment">
         </div>
       </div>
       <div className="column-18 w-clearfix w-col w-col-3 w-col-tiny-tiny-stack">

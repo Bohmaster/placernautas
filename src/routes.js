@@ -3,6 +3,7 @@ import Home from './screens/Home';
 import Users from './screens/Users';
 import ArticuloDetalle from './screens/ArticuloDetalle';
 import Categoria from './screens/Categoria';
+import Contacto from './screens/Contacto';
 
 // This is a static route configuration. It should include all of your top level
 // routes, regardless of whether they are going to server render. In fact, you
@@ -28,6 +29,11 @@ const routes = [
     name: 'Users',
   },
   {
+    path: '/articulo/:articuloId/:titulo',
+    component: ArticuloDetalle,
+    name: 'ArticuloDetalle'
+  },
+  {
     path: '/articulo/:articuloId',
     component: ArticuloDetalle,
     name: 'ArticuloDetalle'
@@ -36,6 +42,11 @@ const routes = [
     path: '/categoria/:subCategoriaId',
     component: Categoria,
     name: 'Categoria'
+  },
+  {
+    path: '/contacto',
+    component: Contacto,
+    name: 'Contacto'
   }
 ];
   

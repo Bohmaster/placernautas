@@ -13,7 +13,10 @@ const loMasLeido = () => {
   const params = {
     filter: {
       order: 'visitas DESC',
-      limit: 5
+      limit: 5,
+      fields: {
+        cuerpo: false
+      }
     }
   }
   return axios.get(API + 'articulos', {params})
@@ -26,7 +29,10 @@ const cargarNotaAutor = () => {
         esNotaAutor: true,
       },
       order: 'fecha DESC',
-      limit: 5
+      limit: 8,
+      fields: {
+        cuerpo: false
+      }
     }
   }
   return axios.get(API + 'articulos', {params})
@@ -39,7 +45,10 @@ class Categoria extends React.Component {
       filter: {
         where: { sidebar: true },
         order: ['posicionSidebar ASC', 'fecha DESC'],
-        limit: 6
+        limit: 6,
+        fields: {
+          cuerpo: false
+        }
       }    
     }
     
@@ -51,7 +60,10 @@ class Categoria extends React.Component {
             const params = {
               filter: {
                 order: 'visitas DESC',
-                limit: 5
+                limit: 5,
+                fields: {
+                  cuerpo: false
+                }
               }
             }
             axios.get(API + 'articulos', {params})
@@ -88,8 +100,6 @@ class Categoria extends React.Component {
         innerArray.push(array[i], array[i+1])
         newArray.push(innerArray);
     }
-
-    console.log(newArray.length, 'MAMI');
     return newArray;
  }
 
@@ -97,6 +107,12 @@ class Categoria extends React.Component {
     const { isLoading, articulos, sidebar, leidas, autores, error } = this.props;
     return (
         <div className="div-block-27">
+        <Helmet
+            defaultTitle="Bebidas, gastronomía y otros placeres | Placernautas"
+            >
+                <title>{articulos[0].categoria.nombre} - {articulos[0].subCategoria.nombre}</title>
+                <meta content={articulos[0].subCategoria.descripcion} name="description"/>
+        </Helmet>
         {
             articulos[0] ? <div className="w-row">
             <div className="column-5 w-col w-col-9 w-col-tiny-tiny-stack">
@@ -111,7 +127,7 @@ class Categoria extends React.Component {
               {
                   this.formatCols(articulos).map(articulo => (
                       <div className="_2columnas w-row">
-                  <Link className="noStyle" to={'/articulo/' + articulo[0].id}>
+                  <Link className="noStyle" to={'/articulo/' + articulo[0].id + '/' + articulo[0].titulo.split(' ').join('-')}>
                     <div className="column-8 w-col w-col-6">
                       <div className="notahome chica left">
                         <div className="headernotahome w-clearfix">
@@ -130,7 +146,7 @@ class Categoria extends React.Component {
                       </div>
                     </div>
                     </Link>
-                    {articulo[1] && <Link className="noStyle" to={'/articulo/' + articulo[1].id}>
+                    {articulo[1] && <Link className="noStyle" to={'/articulo/' + articulo[1].id + '/' + articulo[1].titulo.split(' ').join('-')}>
                       <div className="column-9 w-col w-col-6">
                         <div className="notahome chica right movil">
                           <div className="headernotahome w-clearfix">
@@ -139,7 +155,7 @@ class Categoria extends React.Component {
                           </div>
                           <div className="sobrenotahome"></div>
                           <div className="subheadernotahome w-clearfix">
-                            <div className="autornotahome">Por {articulo[1].autor.nombre}</div><img src={'http://placernautas.com:3005/api/containers/images/' + articulo[0].autor.portada} className="fotoautornotahome"></img></div>
+                            <div className="autornotahome">Por {articulo[1].autor.nombre}</div><img src={'http://placernautas.com:3005/api/containers/images/download/' + articulo[1].autor.portada} className="fotoautornotahome"></img></div>
                           <div className="wrapperfotonotahome">
                             <div className="pienotahome">
                             <div className="titulonotahome small">{articulo[1].titulo}</div>

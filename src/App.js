@@ -56,7 +56,7 @@ const App = ({ routes, initialData, fullUrl}) => {
                 )
               })
             }
-            <a href="contacto.html" className="navlink w-nav-link">Contacto</a>
+            <a href="/contacto" className="navlink w-nav-link">Contacto</a>
           </nav>
           <div className="social"><a href="https://www.facebook.com/Placernautas-194635633972323/?view_public_for=194635633972323" target="_blank" className="linksocial w-inline-block"><img src="/images/face.png"></img></a><a href="#" className="linksocial w-inline-block"><img src="/images/whatt.png"></img></a><a href="#" className="linksocial w-inline-block"><img src="/images/youtube.png"></img></a></div>
           <div className="menu-button w-nav-button"><img src="/images/menuIcon.png" className="image-15"></img></div>

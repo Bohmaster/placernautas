@@ -79,6 +79,7 @@ server
                 <html lang="">
                 <head>
                     <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+                    <meta charset="UTF-8">
                     <meta content="summary" name="twitter:card">
                     <meta content="width=device-width, initial-scale=1" name="viewport">
                     <meta content="Webflow" name="generator">
@@ -87,6 +88,25 @@ server
                     <link href="/css/normalize.css" rel="stylesheet" type="text/css">
                     <link href="/css/webflow.css" rel="stylesheet" type="text/css">
                     <link href="/css/placernautas.webflow.css" rel="stylesheet" type="text/css">
+                    <style>
+                      .noStyle {
+                        text-decoration: none;
+                        color: inherit;
+                      }
+                      .rh5v-Overlay_inner {
+                        visibility: hidden;
+                      }
+                      .div-block-12 {
+                        position: absolute;
+                        width: 60%;
+                        left: 20%;
+                        top: 40%;
+                        z-index: 1;
+                        /* margin: 0 auto; */
+                        text-align: center;
+                        /* top: 50%;
+                      }
+                    </style>
                     ${assets.client.css
                       ? `<link rel="stylesheet" href="${assets.client.css}">`
                       : ''}
@@ -134,6 +154,8 @@ server
                   <script src="/js/jquery.js" type="text/javascript"></script>
                   <script src="/js/webflow.js" type="text/javascript"></script>
                   <script>
+
+        $('#facebook-comment').append('<div class="fb-comments" data-href="${fullUrl}" data-width="100%" data-numposts="10"></div>');
                   var checked = false;
                   $(window).scroll(function(event) {
                     var header = $('.headerall');
@@ -143,7 +165,6 @@ server
                     if ($(this).scrollTop() > 300) {
                       console.log('mayor')
                       if (!checked) {
-                        console.log(checked, 1, 'PIJA')
                         checked = true;
                         header.animate({
                           top: "-=100"

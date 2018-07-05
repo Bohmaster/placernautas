@@ -11,7 +11,7 @@ class Sidebar extends React.Component {
         return (
         <div className="section-2">
             {notas.map((nota) => (
-                <Link className="noStyle" to={'/articulo/'+nota.id} className="noStyle">
+                <Link className="noStyle" to={'/articulo/'+ nota.id + '/' + nota.titulo} className="noStyle">
                     <div className="notasidebar">
                         <div className="conttitsecc">
                             <div className="titulosecciones sb">{nota.categoria.nombre}</div>
@@ -19,7 +19,7 @@ class Sidebar extends React.Component {
                         </div>
                         <div className="div-block-30">
                             <div className="divfotosidebar">
-                            <img src={'http://placernautas.com:3005/api/containers/images/download/' + nota.portada} className="imgnotasidebar"></img></div>
+                            <img alt={nota.titulo} src={'http://placernautas.com:3005/api/containers/images/download/' + nota.portada} className="imgnotasidebar"></img></div>
                             <div className="pienotasidebar">
                                 <div className="titulosidebar">{nota.titulo}</div>
                                 <div className="subtitulosidebar">{nota.subtitulo}</div>
@@ -37,9 +37,9 @@ class Sidebar extends React.Component {
                 <div className="divmasleido">
                         {
                             leidas.map(leida => (
-                                <Link className="noStyle" to={'/articulo/' + leida.id}>
+                                <Link className="noStyle" to={'/articulo/' + leida.id + '/' + leida.titulo}>
                                 <div className="masleido">
-                                    <img src={'http://placernautas.com:3005/api/containers/images/download/' + leida.portada} className="imgmasleido"></img>
+                                    <img alt={leida.titulo} src={'http://placernautas.com:3005/api/containers/images/download/' + leida.portada} className="imgmasleido"></img>
                                     <span className="txtmasleido">{leida.titulo}</span>
                                 </div>
                                 </Link>
@@ -53,9 +53,9 @@ class Sidebar extends React.Component {
                     </div>
                     {
                         autores.map(autor => (
-                            <Link className="noStyle" to={'/articulo/' + autor.id}>
+                            <Link className="noStyle" to={'/articulo/' + + '/' + autor.titulo}>
                             <div className="divcolaboran w-clearfix">
-                                <img src={"http://placernautas.com:3005/api/containers/images/download/" + autor.autor.portada} className="imgcolaboran"></img>
+                                <img alt={autor.titulo} src={"http://placernautas.com:3005/api/containers/images/download/" + autor.autor.portada} className="imgcolaboran"></img>
                                 <div className="div-block-29">
                                     <div className="text-block-4">{autor.autor.nombre} {autor.autor.apellido}</div>
                                     <span className="linkcolaboran">{autor.titulo}</span>

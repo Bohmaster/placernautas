@@ -21,11 +21,20 @@ const getArticles = () => {
   return axios.get(API + 'articulos')
 }
 
+const filterFields = {
+  fields: {
+    cuerpo: false
+  }
+}
+
 const loMasLeido = () => {
   const params = {
     filter: {
       order: 'visitas DESC',
-      limit: 5
+      limit: 5,
+      fields: {
+        cuerpo: false
+      }
     }
   }
   return axios.get(API + 'articulos', {params})
@@ -38,7 +47,10 @@ const cargarDestacado = () => {
         esDestacado: true,
       },
       order: 'fecha DESC',
-      limit: 1
+      limit: 1,
+      fields: {
+        cuerpo: false
+      }
     }
   }
   return axios.get(API + 'articulos', {params})
@@ -51,7 +63,10 @@ const cargarNotaAutor = () => {
         esNotaAutor: true,
       },
       order: 'fecha DESC',
-      limit: 5
+      limit: 8,
+      fields: {
+        cuerpo: false
+      }
     }
   }
   return axios.get(API + 'articulos', {params})
@@ -62,7 +77,10 @@ const llenarHome = (where, limit) => {
     filter: {
       where,
       order: 'fecha DESC',
-      limit: limit
+      limit: limit,
+      fields: {
+        cuerpo: false
+      }
     }    
   }
   console.log(params);
@@ -74,7 +92,10 @@ const llenarSidebar = () => {
     filter: {
       where: { sidebar: true },
       order: ['posicionSidebar ASC', 'fecha DESC'],
-      limit: 6
+      limit: 6,
+      fields: {
+        cuerpo: false
+      }
     }    
   }
   console.log(params);
@@ -87,8 +108,8 @@ class Home extends React.Component {
     return new Promise((resolve, reject) => {
       axios.all([
         cargarDestacado(),
-        llenarHome({esNovedad: true}, 2),
-        llenarHome({esNotaAutor: true}, 2),
+        llenarHome({esNovedad: true}, 5),
+        llenarHome({esNotaAutor: true}, 5),
         llenarHome({esEvento: true}, 2),
         llenarHome({esVideoDestacado: true}, 5),
         llenarSidebar(),
@@ -120,14 +141,15 @@ class Home extends React.Component {
     return (
       <div>
         <Helmet
-            defaultTitle="Admin"
+            defaultTitle="Bebidas, gastronomía y otros placeres | Placernautas"
             >
                 <title>Bebidas, gastronomía y otros placeres | Placernautas</title>
+                <meta content="Bienvenidos placernautas! Nuestro fin es crear una comunidad de amigos con el fin de compartir conocimientos y experiencias sobre los placeres de la vida." name="description"/>
         </Helmet>
         <div data-autoplay="true" data-loop="true" data-wf-ignore="true" className="background-video w-background-video w-background-video-atom">
           <div styles={{position: 'relative'}}>
           <div className="div-block-12">
-              <h1 className="heading-4">La comunidad de los navegantes del placer</h1>
+              <h1 className="heading-4" style={{padding: 5}}>La comunidad de los navegantes del placer</h1>
           </div>
 
           <Video autoPlay loop muted
@@ -172,7 +194,7 @@ class Home extends React.Component {
                   <div className="titulosecciones">Destacado</div>
                   <div className="div-block-23"></div>
                 </div>
-                <Link className="noStyle" to={'/articulo/' + destacado.id}>
+                <Link className="noStyle" to={'/articulo/' + destacado.id + '/' + destacado.titulo.split(' ').join('-')}>
                   <div className="notahome destaca">
                     <div className="headernotahome w-clearfix">
                       <div className="categorianotahome">{destacado.categoria.nombre} {destacado.subCategoria.nombre !== "Ninguna" && ' - ' + destacado.subCategoria.nombre}</div>
@@ -181,7 +203,7 @@ class Home extends React.Component {
                     <div data-w-id="88a275c2-df0e-7697-0fc4-6c5d4497cf5c" className="sobrenotahome"></div>
                     <div className="subheadernotahome w-clearfix">
                       <div className="autornotahome">Por {destacado.autor.nombre} {destacado.autor.apellido}</div><img src={'http://placernautas.com:3005/api/containers/images/download/' + destacado.autor.portada} className="fotoautornotahome"></img></div>
-                    <div className="wrapperfotonotahome"><img src={'http://placernautas.com:3005/api/containers/images/download/' + destacado.portada} className="imgnotahome destacado"></img>
+                    <div className="wrapperfotonotahome"><img alt={destacado.titulo} src={'http://placernautas.com:3005/api/containers/images/download/' + destacado.portada} className="imgnotahome destacado"></img>
                       <div className="pienotahome">
                         <div className="titulonotahome">{destacado.titulo}</div>
                         <div className="subtitulonotahome">{destacado.subtitulo}</div>
@@ -197,10 +219,11 @@ class Home extends React.Component {
               <div className="novedades" onClick={this.click}>
                 <div className="conttitsecc">
                   <div className="titulosecciones">Novedades</div>
+                  
                   <div className="div-block-23"></div>
                 </div>
                 <div className="_2columnas w-row">
-                <Link className="noStyle" to={'/articulo/' + novedades[0].id}>
+                <Link className="noStyle" to={'/articulo/' + novedades[0].id + '/' + novedades[0].titulo.split(' ').join('-')}>
                   <div className="column-8 w-col w-col-6">
                     <div className="notahome chica left">
                       <div className="headernotahome w-clearfix">
@@ -214,12 +237,11 @@ class Home extends React.Component {
                         <div className="pienotahome">
                           <div className="titulonotahome small">{novedades[0].titulo}</div>
                           <div className="subtitulonotahome small">{novedades[0].subtitulo}</div>
-                          <p className="cuerponotahome">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere...</p>
-                        </div><img src={'http://placernautas.com:3005/api/containers/images/download/' + novedades[0].portada} className="imgnotahome chica"></img></div>
+                        </div><img alt={novedades[0].titulo} src={'http://placernautas.com:3005/api/containers/images/download/' + novedades[0].portada} className="imgnotahome chica"></img></div>
                     </div>
                   </div>
                   </Link>
-                  <Link className="noStyle" to={'/articulo/' + novedades[1].id}>
+                  <Link className="noStyle" to={'/articulo/' + novedades[1].id + '/' + novedades[1].titulo.split(' ').join('-')}>
                     <div className="column-9 w-col w-col-6">
                       <div className="notahome chica right movil">
                         <div className="headernotahome w-clearfix">
@@ -233,11 +255,85 @@ class Home extends React.Component {
                           <div className="pienotahome">
                           <div className="titulonotahome small">{novedades[1].titulo}</div>
                             <div className="subtitulonotahome small">{novedades[1].subtitulo}</div>
-                            <p className="cuerponotahome">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere...</p>
-                          </div><img src={'http://placernautas.com:3005/api/containers/images/download/' + novedades[1].portada} className="imgnotahome chica"></img></div>
+                          </div><img alt={novedades[1].titulo} src={'http://placernautas.com:3005/api/containers/images/download/' + novedades[1].portada} className="imgnotahome chica"></img></div>
                       </div>
                     </div>
                   </Link>
+                </div>
+                {/* <div className="otrasnoticias">
+                  <div className="w-row">
+                  <Link className="noStyle" to={'/articulo/' + novedades[2].id + '/' +  novedades[2].titulo.split(' ').join('-')}>
+                    <div className="w-col w-col-4">
+                      <div className="wrapperotranoticia">
+                        <div className="otranoticia zurda">
+                          <div className="titotranoticia">{novedades[2].titulo}</div>
+                          <img src={'http://placernautas.com:3005/api/containers/images/download/' + novedades[2].portada} className="imgotranoticia" />
+                        </div>
+                        <div className="categoriaotranoticia">{novedades[2].categoria.nombre}</div>
+                      </div>
+                    </div>
+                    </Link>
+                    <Link className="noStyle" to={'/articulo/' + novedades[3].id + '/' +  novedades[3].titulo.split(' ').join('-')}>
+                    <div className="w-col w-col-4">
+                      <div className="wrapperotranoticia mitad">
+                        <div className="otranoticia zurda">
+                          <div className="titotranoticia">{novedades[3].titulo}</div>
+                          <img src={'http://placernautas.com:3005/api/containers/images/download/' + novedades[3].portada} className="imgotranoticia" />
+                        </div>
+                        <div className="categoriaotranoticia">{novedades[3].categoria.nombre}</div>
+                      </div>
+                    </div>
+                    </Link>
+                    <Link className="noStyle" to={'/articulo/' + novedades[4].id + '/' +  novedades[4].titulo.split(' ').join('-')}>
+                    <div className="w-col w-col-4">
+                      <div className="wrapperotranoticia">
+                        <div className="otranoticia zurda">
+                          <div className="titotranoticia">{novedades[4].titulo}</div>
+                          <img src={'http://placernautas.com:3005/api/containers/images/download/' + novedades[4].portada} className="imgotranoticia" />
+                        </div>
+                        <div className="categoriaotranoticia">{novedades[4].categoria.nombre}</div>
+                      </div>
+                    </div>
+                    </Link>
+                  </div>
+                </div> */}
+                <div className="otrasnoticias">
+                  <div className="w-row">
+                  <Link className="noStyle" to={'/articulo/' + novedades[2].id + '/' +  novedades[2].titulo.split(' ').join('-')}>
+                    <div className="w-col w-col-4">
+                      <div className="wrapperotranoticia">
+                        <div className="otranoticia zurda">
+                          <div className="titotranoticia">{novedades[2].titulo}</div>
+                          <img src={'http://placernautas.com:3005/api/containers/images/download/' + novedades[2].portada} className="imgotranoticia" />
+                        </div>
+                        <div className="categoriaotranoticia">{novedades[2].categoria.nombre}</div>
+                      </div>
+                    </div>
+                    </Link>
+                    <Link className="noStyle" to={'/articulo/' + novedades[3].id + '/' +  novedades[3].titulo.split(' ').join('-')}>
+                    <div className="w-col w-col-4">
+                      <div className="wrapperotranoticia mitad">
+                        <div className="otranoticia zurda">
+                          <div className="titotranoticia">{novedades[3].titulo}</div>
+                          <img src={'http://placernautas.com:3005/api/containers/images/download/' + novedades[3].portada} className="imgotranoticia" />
+                        </div>
+                        <div className="categoriaotranoticia">{novedades[3].categoria.nombre}</div>
+                      </div>
+                    </div>
+                    </Link>
+                    <Link className="noStyle" to={'/articulo/' + novedades[4].id + '/' +  novedades[4].titulo.split(' ').join('-')}>
+
+                    <div className="w-col w-col-4">
+                      <div className="wrapperotranoticia">
+                        <div className="otranoticia zurda">
+                          <div className="titotranoticia">{novedades[4].titulo}</div>
+                          <img src={'http://placernautas.com:3005/api/containers/images/download/' + novedades[4].portada} className="imgotranoticia" />
+                        </div>
+                        <div className="categoriaotranoticia">{novedades[4].categoria.nombre}</div>
+                      </div>
+                    </div>
+                    </Link>
+                  </div>
                 </div>
                 <div className="publis cuerpo">
                   {/* <div className="logopubli"><img src="images/bodegas.png"></img></div>
@@ -253,7 +349,7 @@ class Home extends React.Component {
                   <div className="div-block-23"></div>
                 </div>
                 <div className="_2columnas w-row">
-                <Link className="noStyle" to={'/articulo/' + notas[0].id}>
+                <Link className="noStyle" to={'/articulo/' + notas[0].id + '/' +  notas[0].titulo.split(' ').join('-')}>
                   <div className="column-8 w-col w-col-6">
                     <div className="notahome chica left">
                       <div className="headernotahome w-clearfix">
@@ -267,12 +363,11 @@ class Home extends React.Component {
                         <div className="pienotahome">
                           <div className="titulonotahome small">{notas[0].titulo}</div>
                           <div className="subtitulonotahome small">{notas[0].subtitulo}</div>
-                          <p className="cuerponotahome">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere...</p>
-                        </div><img src={'http://placernautas.com:3005/api/containers/images/download/' + notas[0].portada} className="imgnotahome chica"></img></div>
+                        </div><img alt={notas[0].titulo} src={'http://placernautas.com:3005/api/containers/images/download/' + notas[0].portada} className="imgnotahome chica"></img></div>
                     </div>
                   </div>
                   </Link>
-                  <Link className="noStyle" to={'/articulo/' + notas[1].id}>
+                  <Link className="noStyle" to={'/articulo/' + notas[1].id + '/' +  notas[1].titulo.split(' ').join('-')}>
                     <div className="column-9 w-col w-col-6">
                       <div className="notahome chica right movil">
                         <div className="headernotahome w-clearfix">
@@ -286,11 +381,48 @@ class Home extends React.Component {
                           <div className="pienotahome">
                           <div className="titulonotahome small">{notas[1].titulo}</div>
                             <div className="subtitulonotahome small">{notas[1].subtitulo}</div>
-                            <p className="cuerponotahome">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere...</p>
-                          </div><img src={'http://placernautas.com:3005/api/containers/images/download/' + notas[1].portada} className="imgnotahome chica"></img></div>
+                          </div><img alt={notas[1].titulo} src={'http://placernautas.com:3005/api/containers/images/download/' + notas[1].portada} className="imgnotahome chica"></img></div>
                       </div>
                     </div>
                   </Link>
+                </div>
+                <div className="otrasnoticias">
+                  <div className="w-row">
+                  <Link className="noStyle" to={'/articulo/' + notas[2].id + '/' +  notas[2].titulo.split(' ').join('-')}>
+                    <div className="w-col w-col-4">
+                      <div className="wrapperotranoticia">
+                        <div className="otranoticia zurda">
+                          <div className="titotranoticia">{notas[2].titulo}</div>
+                          <img src={'http://placernautas.com:3005/api/containers/images/download/' + notas[2].portada} className="imgotranoticia" />
+                        </div>
+                        <div className="categoriaotranoticia">{notas[2].categoria.nombre}</div>
+                      </div>
+                    </div>
+                    </Link>
+                    <Link className="noStyle" to={'/articulo/' + notas[3].id + '/' +  notas[3].titulo.split(' ').join('-')}>
+                    <div className="w-col w-col-4">
+                      <div className="wrapperotranoticia mitad">
+                        <div className="otranoticia zurda">
+                          <div className="titotranoticia">{notas[3].titulo}</div>
+                          <img src={'http://placernautas.com:3005/api/containers/images/download/' + notas[3].portada} className="imgotranoticia" />
+                        </div>
+                        <div className="categoriaotranoticia">{notas[3].categoria.nombre}</div>
+                      </div>
+                    </div>
+                    </Link>
+                    <Link className="noStyle" to={'/articulo/' + notas[4].id + '/' +  notas[4].titulo.split(' ').join('-')}>
+
+                    <div className="w-col w-col-4">
+                      <div className="wrapperotranoticia">
+                        <div className="otranoticia zurda">
+                          <div className="titotranoticia">{notas[4].titulo}</div>
+                          <img src={'http://placernautas.com:3005/api/containers/images/download/' + notas[4].portada} className="imgotranoticia" />
+                        </div>
+                        <div className="categoriaotranoticia">{notas[4].categoria.nombre}</div>
+                      </div>
+                    </div>
+                    </Link>
+                  </div>
                 </div>
                 <div className="publis cuerpo">
                   {/* <div className="logopubli"><img src="images/bodegas.png"></img></div>
@@ -306,7 +438,7 @@ class Home extends React.Component {
                   <div className="div-block-23"></div>
                 </div>
                 <div className="_2columnas w-row">
-                <Link className="noStyle" to={'/articulo/' + eventos[0].id}>
+                <Link className="noStyle" to={'/articulo/' + eventos[0].id + '/' + eventos[0].titulo.split(' ').join('-')}>
                   <div className="column-8 w-col w-col-6">
                     <div className="notahome chica left">
                       <div className="headernotahome w-clearfix">
@@ -320,12 +452,11 @@ class Home extends React.Component {
                         <div className="pienotahome">
                           <div className="titulonotahome small">{eventos[0].titulo}</div>
                           <div className="subtitulonotahome small">{eventos[0].subtitulo}</div>
-                          <p className="cuerponotahome">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere...</p>
-                        </div><img src={'http://placernautas.com:3005/api/containers/images/download/' + eventos[0].portada} className="imgnotahome chica"></img></div>
+                        </div><img alt={eventos[0].titulo} src={'http://placernautas.com:3005/api/containers/images/download/' + eventos[0].portada} className="imgnotahome chica"></img></div>
                     </div>
                   </div>
                   </Link>
-                  <Link className="noStyle" to={'/articulo/' + eventos[1].id}>
+                  <Link className="noStyle" to={'/articulo/' + eventos[1].id + '/' + eventos[1].titulo.split(' ').join('-')}>
                     <div className="column-9 w-col w-col-6">
                       <div className="notahome chica right movil">
                         <div className="headernotahome w-clearfix">
@@ -339,8 +470,7 @@ class Home extends React.Component {
                           <div className="pienotahome">
                           <div className="titulonotahome small">{eventos[1].titulo}</div>
                             <div className="subtitulonotahome small">{eventos[1].subtitulo}</div>
-                            <p className="cuerponotahome">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros elementum tristique. Duis cursus, mi quis viverra ornare, eros dolor interdum nulla, ut commodo diam libero vitae erat. Aenean faucibus nibh et justo cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus tristique posuere...</p>
-                          </div><img src={'http://placernautas.com:3005/api/containers/images/download/' + eventos[1].portada} className="imgnotahome chica"></img></div>
+                          </div><img alt={eventos[1].titulo} src={'http://placernautas.com:3005/api/containers/images/download/' + eventos[1].portada} className="imgnotahome chica"></img></div>
                       </div>
                     </div>
                   </Link>
@@ -361,7 +491,7 @@ class Home extends React.Component {
             <div className="div-block-23"></div>
           </div>
           <div className="row-7 w-row">
-          <Link className="noStyle" to={'/articulo/' + videos[0].id}>
+          <Link className="noStyle" to={'/articulo/' + videos[0].id + '/' + videos[0].titulo.split(' ').join('-')}>
             <div className="column-16 w-col w-col-6 w-col-medium-6 w-col-small-6">
               <div className="divmultiinicio">
                 <div className="sobrevideo"></div>
@@ -371,7 +501,7 @@ class Home extends React.Component {
               </div>
             </div>
           </Link>
-          <Link className="noStyle" to={'/articulo/' + videos[1].id}>
+          <Link className="noStyle" to={'/articulo/' + videos[1].id + '/' + videos[1].titulo.split(' ').join('-')}>
             <div className="column-15 w-col w-col-6 w-col-medium-6 w-col-small-6">
               <div className="divmultiinicio w-clearfix">
                 <div className="sobrevideo der"></div>
@@ -384,7 +514,7 @@ class Home extends React.Component {
           </div>
          
           <div className="row-9 w-row">
-          <Link className="noStyle" to={'/articulo/' + videos[2].id}>
+          <Link className="noStyle" to={'/articulo/' + videos[2].id + '/' + videos[2].titulo.split(' ').join('-')}>
             <div className="w-col w-col-4 w-col-small-4">
               <div className="divmultiinicio">
                 <div className="sobrevideo"></div>
@@ -394,7 +524,7 @@ class Home extends React.Component {
               </div>
             </div>
           </Link>
-          <Link className="noStyle" to={'/articulo/' + videos[3].id}>
+          <Link className="noStyle" to={'/articulo/' + videos[3].id + '/' + videos[3].titulo.split(' ').join('-')}>
             <div className="w-col w-col-4 w-col-small-4">
               <div className="divmultiinicio centro">
                 <div styles="padding-top:56.17021276595745%" id="w-node-2c5adb49-a8b0-ba54-c46f-c1cb14165851" className="video-2 med w-video w-embed">
@@ -406,7 +536,7 @@ class Home extends React.Component {
               </div>
             </div>
             </Link>
-            <Link className="noStyle" to={'/articulo/' + videos[4].id}>
+            <Link className="noStyle" to={'/articulo/' + videos[4].id + '/' + videos[4].titulo.split(' ').join('-')}>
             <div className="w-col w-col-4 w-col-small-4">
               <div className="divmultiinicio w-clearfix">
                 <div className="sobrevideo der"></div>
